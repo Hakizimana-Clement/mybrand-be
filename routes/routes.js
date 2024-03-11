@@ -3,29 +3,16 @@ const router = express.Router();
 const Blog = require("../models/blog");
 
 // import controller
-const { getAllBlogs } = require("../controllers/BlogController");
+const { getAllBlogs, createBlog } = require("../controllers/BlogController");
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
 router
   .get("/blogs", getAllBlogs)
-  // create blog
-  .post("/blogs", async (req, res) => {
-    // console.log(req.body);
-    // step 1. Take all data from client but on object
-    const blog = new Blog({
-      title: req.body.title,
-      writer: req.body.writer,
-      writeImage: req.body.writeImage,
-      blogImage: req.body.blogImage,
-      content: req.body.content,
-    });
-    // step 2. save them
-    await blog.save();
-    // step 3. send data
-    res.send(blog);
-  })
-
+  //////////////////////////////////
+  // Create blog
+  //////////////////////////////////
+  .post("/blogs", createBlog)
   //////////////////////////////////
   // Get individual blog
   //////////////////////////////////
