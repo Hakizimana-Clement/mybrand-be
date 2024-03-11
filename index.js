@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const routes = require("./routes/routes");
+// routes
+const blogRoutes = require("./routes/routes");
+const querriesRoutes = require("./routes/querries");
 
 mongoose
   .connect(
@@ -17,8 +19,12 @@ mongoose
       next();
     });
 
-    // routes
-    app.use("/api", routes);
+    /////////////  routes ////////////////////
+
+    // blog api
+    app.use("/api/blogs", blogRoutes);
+    // querries api
+    app.use("/api/querries", querriesRoutes);
     // connection
     app.listen(4141, () => {
       console.log("successfully  connected to blog database");

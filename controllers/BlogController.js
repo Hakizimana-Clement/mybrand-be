@@ -1,4 +1,4 @@
-const Blog = require("../models/blog");
+const Blog = require("../models/blogModel");
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
@@ -29,7 +29,6 @@ const GetSingleBlog = async (req, res) => {
 //////////////////////////////////
 // Create blog
 //////////////////////////////////
-
 const createBlog = async (req, res) => {
   // step 1. Take all data from client but on object
   const blog = new Blog({
@@ -47,7 +46,6 @@ const createBlog = async (req, res) => {
 //////////////////////////////////
 // Update blog
 //////////////////////////////////
-
 const updateBlog = async (req, res) => {
   // step 1. Get id from client
   const { id } = req.params;
