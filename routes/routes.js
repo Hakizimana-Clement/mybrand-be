@@ -1,18 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Blog = require("./models/blog");
+const Blog = require("../models/blog");
 
+// import controller
+const { getAllBlogs } = require("../controllers/BlogController");
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
 router
-  .get("/blogs", async (req, res) => {
-    // step 1. we use find method and store in varibale
-    const blogs = await Blog.find();
-    // step 2. send data
-    res.send(blogs);
-  })
-
+  .get("/blogs", getAllBlogs)
   // create blog
   .post("/blogs", async (req, res) => {
     // console.log(req.body);
