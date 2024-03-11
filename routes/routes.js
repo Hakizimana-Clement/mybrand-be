@@ -3,7 +3,11 @@ const router = express.Router();
 const Blog = require("../models/blog");
 
 // import controller
-const { getAllBlogs, createBlog } = require("../controllers/BlogController");
+const {
+  getAllBlogs,
+  createBlog,
+  GetSingleBlog,
+} = require("../controllers/BlogController");
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
@@ -16,21 +20,7 @@ router
   //////////////////////////////////
   // Get individual blog
   //////////////////////////////////
-  .get("/blogs/:id", async (req, res) => {
-    // step 1. Get id from client
-    const { id } = req.params;
-    // step 2. use try/catch block to prevent error can occur
-    try {
-      // step 3. use findOne method
-      const blog = await Blog.findOne({ _id: id });
-      // step 4. send blog data
-      res.send(blog);
-    } catch (error) {
-      // if id not found send error message
-      res.status(404).send({ error: "Blog doesn't exist" });
-    }
-  })
-
+  .get("/blogs/:id", GetSingleBlog)
   //////////////////////////////////
   // Update blog
   //////////////////////////////////

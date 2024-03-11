@@ -11,6 +11,20 @@ const getAllBlogs = async (req, res) => {
 //////////////////////////////////
 // Get individual blog
 //////////////////////////////////
+const GetSingleBlog = async (req, res) => {
+  // step 1. Get id from client
+  const { id } = req.params;
+  // step 2. use try/catch block to prevent error can occur
+  try {
+    // step 3. use findOne method
+    const blog = await Blog.findOne({ _id: id });
+    // step 4. send blog data
+    res.send(blog);
+  } catch (error) {
+    // if id not found send error message
+    res.status(404).send({ error: "Blog doesn't exist" });
+  }
+};
 
 //////////////////////////////////
 // Create blog
@@ -37,4 +51,4 @@ const createBlog = async (req, res) => {
 // Delete blog
 //////////////////////////////////
 
-module.exports = { getAllBlogs, createBlog };
+module.exports = { getAllBlogs, createBlog, GetSingleBlog };
