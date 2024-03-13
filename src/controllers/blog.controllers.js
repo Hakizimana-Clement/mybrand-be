@@ -2,34 +2,36 @@ const Blog = require("../models/blogModel");
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
-const getAllBlogs = async (req, res) => {
+const httpGetAllBlogs = async (req, res) => {
   // step 1. we use find method and store in varibale
-  const blogs = await Blog.find();
+  const blogs = await Blog.find({}).sort({ createdAt: -1 });
   // step 2. send data
-  res.send(blogs);
+  // res.json(blogs);
+  res.json({ message: "success", data: blogs });
 };
 //////////////////////////////////
 // Get individual blog
 //////////////////////////////////
-const GetSingleBlog = async (req, res) => {
+const httpGetSingleBlog = async (req, res) => {
   // step 1. Get id from client
   const { id } = req.params;
+  console.info(id);
   // step 2. use try/catch block to prevent error can occur
   try {
     // step 3. use findOne method
     const blog = await Blog.findOne({ _id: id });
     // step 4. send blog data
-    res.send(blog);
+    res.json(blog);
   } catch (error) {
     // if id not found send error message
-    res.status(404).send({ error: "Blog doesn't exist" });
+    res.status(404).json({ error: "Blog doesn't exist" });
   }
 };
 
 //////////////////////////////////
 // Create blog
 //////////////////////////////////
-const createBlog = async (req, res) => {
+const httpCreateBlog = async (req, res) => {
   // step 1. Take all data from client but on object
   const blog = new Blog({
     title: req.body.title,
@@ -41,12 +43,12 @@ const createBlog = async (req, res) => {
   // step 2. save them
   await blog.save();
   // step 3. send data
-  res.send(blog);
+  res.json(blog);
 };
 //////////////////////////////////
 // Update blog
 //////////////////////////////////
-const updateBlog = async (req, res) => {
+const httpUpdateBlog = async (req, res) => {
   // step 1. Get id from client
   const { id } = req.params;
   // step 2. use try/catch block to prevent error can occur
@@ -80,7 +82,7 @@ const updateBlog = async (req, res) => {
     await blog.save();
 
     // step 4. send to saved blog
-    res.send(blog);
+    res.json(blog);
   } catch (error) {
     res.status(404).send({ error: "Blog doesn't exist" });
   }
@@ -89,22 +91,22 @@ const updateBlog = async (req, res) => {
 //////////////////////////////////
 // Delete blog
 //////////////////////////////////
-const deleteBlog = async (req, res) => {
+const httpDeleteBlog = async (req, res) => {
   const { id } = req.params;
 
   try {
     // step 1. find be id and delete
     await Blog.deleteOne({ _id: id });
     //  step 2. send not content code status and then send empty object
-    res.status(204).send();
+    res.status(204).json();
   } catch (error) {
-    res.status(404).send({ error: "Blog doesn't exist" });
+    res.status(404).json({ error: "Blog doesn't exist" });
   }
 };
 module.exports = {
-  getAllBlogs,
-  createBlog,
-  GetSingleBlog,
-  updateBlog,
-  deleteBlog,
+  httpGetAllBlogs,
+  httpCreateBlog,
+  httpGetSingleBlog,
+  httpUpdateBlog,
+  httpDeleteBlog,
 };
