@@ -1,10 +1,7 @@
-// step 0. import neccessary express
+// step 1. import neccessary express
 import { Request, Response, NextFunction } from "express";
-// step 1. import model to work on
-import commentModels from "../models/commentModels";
 // step 2. import validation
 import commentValid from "../validations/comment";
-import { object } from "joi";
 
 const isCommentValid = async (
   req: Request,
