@@ -3,9 +3,7 @@ import validateBlog from "../validations/blog";
 import blogModels from "../models/blogModels";
 const isValid = async (req: Request, res: Response, next: NextFunction) => {
   const validationResult = await validateBlog(req.body);
-  // const { error: error } = validateBlog(req.body);
 
-  // if (error) {
   if (validationResult.error) {
     const errorMessage = validationResult.error.details[0].message.replace(
       /["\\]/g,

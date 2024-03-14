@@ -53,10 +53,15 @@ const httpCreateBlog = async (req: Request, res: Response) => {
 const httpUpdateBlog = async (req: Request, res: Response) => {
   // step 1. Get id from client
   const { id } = req.params;
+  // check if data is empty before saving to database
+  const allData = req.body;
+  if (Object.keys(allData).length === 0) {
+    return res.status(400).json({ error: "Please fill fieds to update" });
+  }
   try {
     const blog = await Blog.findOneAndUpdate(
       { _id: id },
-      { ...req.body },
+      { ...allData },
       { new: true }
     );
 

@@ -10,7 +10,9 @@ import {
   httpDeleteBlog,
 } from "../controllers/blog.controllers";
 
+// validation
 import isValid from "../middleware/blogMiddleware";
+import isUpdateValid from "../middleware/blogUpdateMiddleware";
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
 // Get all blogs
@@ -21,7 +23,7 @@ blogRouter
   // Get individual blog
   .get("/:id", httpGetSingleBlog)
   // Update blog
-  .patch("/:id", httpUpdateBlog)
+  .patch("/:id", isUpdateValid, httpUpdateBlog)
   // Delete blog
   .delete("/:id", httpDeleteBlog);
 

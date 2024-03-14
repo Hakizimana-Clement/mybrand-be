@@ -13,5 +13,4 @@ const validateBlog = async (blogData: object) => {
   return blogSchema.validate(blogData);
 };
 
-// module.exports = validateBlog;
 export default validateBlog;
