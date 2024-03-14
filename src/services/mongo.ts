@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+const databaseUrl = process.env.MONGO_URL as string;
+
 // connection on (open) event
 mongoose.connection.on("open", () => {
   console.info("Database connected successfully");
@@ -10,9 +12,7 @@ mongoose.connection.on("close", () => {
 
 // connect to mongo url
 const mongoConnect = async () => {
-  await mongoose.connect(
-    "mongodb://127.0.0.1:27017/BlogDataBase?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.1"
-  );
+  await mongoose.connect(databaseUrl);
 };
 // disconnect mongo
 const mongoDisconnect = async () => {

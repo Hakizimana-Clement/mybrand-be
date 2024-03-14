@@ -1,3 +1,5 @@
+import "dotenv/config";
+const port = process.env.PORT;
 import { app } from "./app";
 import { mongoConnect, mongoDisconnect } from "./services/mongo";
 
@@ -6,8 +8,8 @@ const startServer = async () => {
   try {
     await mongoConnect();
     // server connection
-    app.listen(4000, () => {
-      console.log("Server has started on port 4000");
+    app.listen(port, () => {
+      console.log(`Server has started on port ${port}`);
     });
   } catch (error) {
     await mongoDisconnect();

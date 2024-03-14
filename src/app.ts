@@ -5,8 +5,8 @@ import apiRoutes from "./routes";
 
 app.use(express.json());
 
-// // middleware
-// // show path and method coming in server
+// middleware
+// show path and method coming in server
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(req.path, req.method);
   next();
