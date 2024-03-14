@@ -1,5 +1,4 @@
-const Joi = require("joi");
-
+import Joi from "joi";
 // blog schema to validate
 const blogSchema = Joi.object({
   title: Joi.string().required(),
@@ -10,8 +9,9 @@ const blogSchema = Joi.object({
 });
 
 // validate data we have
-const validateBlog = async (blogData) => {
+const validateBlog = async (blogData: object) => {
   return blogSchema.validate(blogData);
 };
 
-module.exports = validateBlog;
+// module.exports = validateBlog;
+export default validateBlog;

@@ -1,14 +1,16 @@
-const express = require("express");
+import express from "express";
 const blogRouter = express.Router();
+
 // import blogs controller
-const {
+import {
   httpGetAllBlogs,
   httpCreateBlog,
   httpGetSingleBlog,
   httpUpdateBlog,
   httpDeleteBlog,
-} = require("../controllers/blog.controllers");
-const isValid = require("../middleware/blogMiddleware");
+} from "../controllers/blog.controllers";
+
+import isValid from "../middleware/blogMiddleware";
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
 // Get all blogs
@@ -19,9 +21,10 @@ blogRouter
   // Get individual blog
   .get("/:id", httpGetSingleBlog)
   // Update blog
-  .patch("/:id", isValid, httpUpdateBlog)
+  .patch("/:id", httpUpdateBlog)
   // Delete blog
-  .delete("/:id", isValid, httpDeleteBlog);
+  .delete("/:id", httpDeleteBlog);
 
 // export all routers
-module.exports = blogRouter;
+// module.exports = blogRouter;
+export default blogRouter;

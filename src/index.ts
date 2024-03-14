@@ -1,5 +1,5 @@
-const app = require("./app");
-const { mongoConnect, mongoDisconnect } = require("./src/services/mongo");
+import { app } from "./app";
+import { mongoConnect, mongoDisconnect } from "./services/mongo";
 
 const startServer = async () => {
   // connect to database first

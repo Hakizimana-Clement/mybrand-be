@@ -1,8 +1,10 @@
-const Blog = require("../models/blogModel");
+// const Blog = require("../models/blogModel");
+import { Request, Response } from "express";
+import Blog from "../models/blogModels";
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
-const httpGetAllBlogs = async (req, res) => {
+const httpGetAllBlogs = async (req: Request, res: Response) => {
   // step 1. we use find method and store in varibale
   const blogs = await Blog.find({}).sort({ createdAt: -1 });
   // step 2. send data
@@ -12,7 +14,7 @@ const httpGetAllBlogs = async (req, res) => {
 //////////////////////////////////
 // Get individual blog
 //////////////////////////////////
-const httpGetSingleBlog = async (req, res) => {
+const httpGetSingleBlog = async (req: Request, res: Response) => {
   // step 1. Get id from client
   const { id } = req.params;
   console.info(id);
@@ -31,7 +33,7 @@ const httpGetSingleBlog = async (req, res) => {
 //////////////////////////////////
 // Create blog
 //////////////////////////////////
-const httpCreateBlog = async (req, res) => {
+const httpCreateBlog = async (req: Request, res: Response) => {
   // step 1. Take all data from client but on object
   const blog = new Blog({
     title: req.body.title,
@@ -45,53 +47,32 @@ const httpCreateBlog = async (req, res) => {
   // step 3. send data
   res.json(blog);
 };
-//////////////////////////////////
-// Update blog
-//////////////////////////////////
-const httpUpdateBlog = async (req, res) => {
+// //////////////////////////////////
+// // Update blog
+// //////////////////////////////////
+const httpUpdateBlog = async (req: Request, res: Response) => {
   // step 1. Get id from client
   const { id } = req.params;
-  // step 2. use try/catch block to prevent error can occur
   try {
-    // step 1. find the post by id.
-    const blog = await Blog.findOne({ _id: id });
+    const blog = await Blog.findOneAndUpdate(
+      { _id: id },
+      { ...req.body },
+      { new: true }
+    );
 
-    // step 2. check the field  you want to update it one by one.
-    // title
-    if (req.body.title) {
-      blog.title = req.body.title;
+    if (!blog) {
+      res.status(404).json({ error: "Blog doesn't exist" });
     }
-    // writer,
-    if (req.body.writer) {
-      blog.writer = req.body.writer;
-    }
-    // writeImage
-    if (req.body.writeImag) {
-      blog.writeImag = req.body.writeImag;
-    }
-    // blogImage
-    if (req.body.blogImage) {
-      blog.blogImage = req.body.blogImage;
-    }
-    // blog content
-    if (req.body.content) {
-      blog.content = req.body.content;
-    }
-
-    // step 3. save in database
-    await blog.save();
-
-    // step 4. send to saved blog
-    res.json(blog);
+    res.status(200).json(blog);
   } catch (error) {
-    res.status(404).send({ error: "Blog doesn't exist" });
+    res.status(404).json({ error: "Blog doesn't exist" });
   }
 };
 
 //////////////////////////////////
 // Delete blog
 //////////////////////////////////
-const httpDeleteBlog = async (req, res) => {
+const httpDeleteBlog = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
@@ -103,7 +84,8 @@ const httpDeleteBlog = async (req, res) => {
     res.status(404).json({ error: "Blog doesn't exist" });
   }
 };
-module.exports = {
+
+export {
   httpGetAllBlogs,
   httpCreateBlog,
   httpGetSingleBlog,

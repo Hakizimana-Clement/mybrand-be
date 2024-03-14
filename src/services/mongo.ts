@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 // connection on (open) event
 mongoose.connection.on("open", () => {
   console.info("Database connected successfully");
@@ -20,4 +19,6 @@ const mongoDisconnect = async () => {
   await mongoose.disconnect();
 };
 
-module.exports = { mongoConnect, mongoDisconnect };
+export { mongoConnect, mongoDisconnect };
+
+// module.exports = { mongoConnect, mongoDisconnect };
