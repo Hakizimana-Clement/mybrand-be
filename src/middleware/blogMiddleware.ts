@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import validateBlog from "../validations/blog";
 import blogModels from "../models/blogModels";
+
 const isValid = async (req: Request, res: Response, next: NextFunction) => {
   const validationResult = await validateBlog(req.body);
 
@@ -11,7 +12,7 @@ const isValid = async (req: Request, res: Response, next: NextFunction) => {
     );
     console.log(validationResult.error?.details[0].message);
     console.log("error: ", validationResult.error.details[0].message);
-    return res.status(400).json(errorMessage);
+    return res.status(400).json({ error: errorMessage });
   }
 
   // check if title is unique

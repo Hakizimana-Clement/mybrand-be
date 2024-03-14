@@ -28,5 +28,4 @@ blogRouter
   .delete("/:id", httpDeleteBlog);
 
 // export all routers
-// module.exports = blogRouter;
 export default blogRouter;

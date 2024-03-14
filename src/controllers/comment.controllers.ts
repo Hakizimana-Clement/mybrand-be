@@ -19,6 +19,7 @@ const createComment = async (req: Request, res: Response) => {
     if (!blogId) {
       return res.status(404).json({ error: "Blog doesn't exist" });
     }
+
     // create new comments
     const newComment = new CommentModel({
       blog_id: id,
