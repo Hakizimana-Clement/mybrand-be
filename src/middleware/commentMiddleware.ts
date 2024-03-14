@@ -12,28 +12,21 @@ const isCommentValid = async (
     // step 3. validate income req to server
     const validationResult = commentValid(req.body);
 
-    // step 4. check if its empty
-    if (Object.keys(validationResult.value).length === 0) {
-      return res
-        .status(400)
-        .json({ error: "Please fill all fieds to create comments" });
-    }
-
-    // step 5. check if there error
+    // step 4. check if there error
     if (validationResult.error) {
       const errorMessage = validationResult.error.details[0].message.replace(
         /["\"]/g,
         ""
       );
       console.log(errorMessage);
-      return res.status(400).json(errorMessage);
+      return res.status(400).json({ error: errorMessage });
     }
 
-    // step 6. move to other function
+    // step 5. move to other function
     next();
   } catch (error) {
-    console.log({ error: error });
-    res.status(400).json({ error: error });
+    console.log("Error ", error);
+    // res.status(400).json({ "Error ": error });
   }
 };
 

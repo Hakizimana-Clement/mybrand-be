@@ -1,6 +1,7 @@
 // const Blog = require("../models/blogModel");
 import { Request, Response } from "express";
 import Blog from "../models/blogModels";
+import mongoose from "mongoose";
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
@@ -9,7 +10,7 @@ const httpGetAllBlogs = async (req: Request, res: Response) => {
   const blogs = await Blog.find({}).sort({ createdAt: -1 });
   // step 2. send data
   // res.json(blogs);
-  res.json({ message: "success", data: blogs });
+  res.status(200).json({ message: "success", blogs: blogs });
 };
 //////////////////////////////////
 // Get individual blog
@@ -20,10 +21,16 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
   console.info(id);
   // step 2. use try/catch block to prevent error can occur
   try {
+    // check if id is valid as mongoose id
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "Blog doesn't exist" });
+    }
     // step 3. use findOne method
     const blog = await Blog.findOne({ _id: id });
+    // check if that blog exist
+    if (!blog) return res.status(404).json({ error: "Blog doesn't exsit" });
     // step 4. send blog data
-    res.json(blog);
+    res.status(200).json({ message: "success", blog: blog });
   } catch (error) {
     // if id not found send error message
     res.status(404).json({ error: "Blog doesn't exist" });
@@ -45,7 +52,7 @@ const httpCreateBlog = async (req: Request, res: Response) => {
   // step 2. save them
   await blog.save();
   // step 3. send data
-  res.json(blog);
+  res.status(201).json({ message: "success", data: blog });
 };
 // //////////////////////////////////
 // // Update blog
@@ -66,7 +73,7 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
     );
 
     if (!blog) {
-      res.status(404).json({ error: "Blog doesn't exist" });
+      return res.status(404).json({ error: "Blog doesn't exist" });
     }
     res.status(200).json(blog);
   } catch (error) {
@@ -81,6 +88,9 @@ const httpDeleteBlog = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ error: "Blog doesn't exist" });
+    }
     // step 1. find be id and delete
     await Blog.deleteOne({ _id: id });
     //  step 2. send not content code status and then send empty object

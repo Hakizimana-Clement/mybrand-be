@@ -5,12 +5,13 @@ import {
   httpCreateQuery,
   httpDeleteQuery,
 } from "../controllers/query.controllers";
+import isQuerryValid from "../middleware/querryMiddleware";
 
 querriesRouter
   // get all comment
   .get("/", httpGetAllQuerries)
   // Create comment
-  .post("/", httpCreateQuery)
+  .post("/", isQuerryValid, httpCreateQuery)
   // delete comment
   .delete("/:id", httpDeleteQuery);
 

@@ -14,9 +14,9 @@ const createComment = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Blog doesn't exist" });
     }
 
-    const blogId = await BlogModel.findById(id);
+    const oneBlog = await BlogModel.findById(id);
 
-    if (!blogId) {
+    if (!oneBlog) {
       return res.status(404).json({ error: "Blog doesn't exist" });
     }
 
@@ -31,10 +31,9 @@ const createComment = async (req: Request, res: Response) => {
     // save in comment collection
     await newComment.save();
 
-    blogId.comments.push(newComment);
-    // console.log(blogId.comments);
+    oneBlog.comments.push(newComment);
 
-    await blogId.save();
+    await oneBlog.save();
     res.status(201).json({ message: "Success", comments: newComment });
   } catch (error) {
     console.log(error);
@@ -58,8 +57,8 @@ const getAllComments = async (req: Request, res: Response) => {
     const blogId = await BlogModel.findById(id);
     if (!blogId) return res.status(404).json({ error: "Blog doesn't exist" });
     const blogComments = blogId.comments;
-    console.log(blogComments);
-    res.status(200).json({ message: "Success", data: blogComments });
+    // console.log(blogComments);
+    res.status(200).json({ message: "Success", comments: blogComments });
   } catch (error) {
     res.status(404).json({ error: "Blog doesn't exist !!!" });
   }

@@ -3,9 +3,9 @@ import Joi from "joi";
 
 // step 2. import model schema to work on
 const commentSchema = Joi.object({
-  name: Joi.string().required(),
-  email: Joi.string().required(),
-  comment: Joi.string().required(),
+  name: Joi.string().required().min(4).max(10),
+  email: Joi.string().required().email(),
+  comment: Joi.string().required().max(500),
 });
 
 // step 3.validate function

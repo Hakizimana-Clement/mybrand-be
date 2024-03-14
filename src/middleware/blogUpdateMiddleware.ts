@@ -23,7 +23,7 @@ const isUpdateValid = async (
     );
 
     console.log(errorMessage);
-    return res.status(400).json(errorMessage);
+    return res.status(400).json({ error: errorMessage });
   }
 
   try {

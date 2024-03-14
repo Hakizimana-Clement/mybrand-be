@@ -45,14 +45,10 @@ const createLike = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Blog doesn't exist" });
     }
 
+    // check if user provide false as value
     const likeValue = req.body.like;
-
-    if (
-      likeValue === undefined ||
-      typeof likeValue !== "boolean" ||
-      likeValue === false
-    ) {
-      return res.status(400).json({ error: "provide like value" });
+    if (likeValue === false) {
+      return res.status(400).json({ error: "Please provide like value" });
     }
 
     // step 2. create new like

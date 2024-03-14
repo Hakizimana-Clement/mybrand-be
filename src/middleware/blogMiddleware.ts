@@ -10,8 +10,8 @@ const isValid = async (req: Request, res: Response, next: NextFunction) => {
       /["\\]/g,
       ""
     );
-    console.log(validationResult.error?.details[0].message);
-    console.log("error: ", validationResult.error.details[0].message);
+
+    console.log(errorMessage);
     return res.status(400).json({ error: errorMessage });
   }
 
