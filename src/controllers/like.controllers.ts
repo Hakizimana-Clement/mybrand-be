@@ -28,9 +28,11 @@ const getAllLikes = async (req: Request, res: Response) => {
     // res.status(200).json({ message: "success", blog: oneBlog });
 
     //=> likes only
-    res.status(200).json({ message: "success", likes: oneBlog.likes });
+    res
+      .status(200)
+      .json({ status: "200", message: "success", likes: oneBlog.likes });
   } catch (error) {
-    return res.status(404).json({ error: "Blog doesn't exist" });
+    return res.status(404).json({ status: "404", error: "Blog doesn't exist" });
   }
 };
 
