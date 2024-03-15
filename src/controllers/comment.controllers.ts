@@ -10,6 +10,7 @@ const createComment = async (req: Request, res: Response) => {
   // blog Id
   const { id } = req.params;
   try {
+    //  verify if it's mongoose id
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({
         status: "404",
@@ -18,8 +19,8 @@ const createComment = async (req: Request, res: Response) => {
       });
     }
 
+    // verify blog id
     const oneBlog = await BlogModel.findById(id);
-
     if (!oneBlog) {
       return res.status(404).json({
         status: "404",
@@ -39,12 +40,21 @@ const createComment = async (req: Request, res: Response) => {
     // save in comment collection
     await newComment.save();
 
-    oneBlog.comments.push(newComment);
-
+    // // Here i have problem i can push
+    oneBlog.comments.push(newComment._id);
     await oneBlog.save();
-    res
-      .status(201)
-      .json({ status: "201", message: "Created", comments: newComment });
+
+    const myBlogWithCommentData = await BlogModel.findById(id).populate(
+      "comments"
+    );
+    console.log(myBlogWithCommentData);
+
+    res.status(201).json({
+      status: "201",
+      message: "Created",
+      comments: newComment,
+      blog: myBlogWithCommentData,
+    });
   } catch (error) {
     console.log(error);
 
@@ -73,6 +83,7 @@ const getAllComments = async (req: Request, res: Response) => {
     }
 
     const blogId = await BlogModel.findById(id);
+
     if (!blogId) {
       return res.status(404).json({
         status: "404",
@@ -80,12 +91,15 @@ const getAllComments = async (req: Request, res: Response) => {
         error: "Blog doesn't exist",
       });
     }
+    console.log(blogId);
+    const myComment = await BlogModel.findById(id).populate("comments");
 
-    const blogComments = blogId.comments;
-    // console.log(blogComments);
-    res
-      .status(200)
-      .json({ status: "200", message: "Success", comments: blogComments });
+    res.status(200).json({
+      status: "200",
+      message: "Success",
+      // comments: blogId,
+      blog: myComment,
+    });
   } catch (error) {
     res.status(404).json({
       status: "404",

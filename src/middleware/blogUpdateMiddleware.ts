@@ -8,7 +8,7 @@ const isUpdateValid = async (
   next: NextFunction
 ) => {
   const validationResult = validateUpdateBlog(req.body);
-  console.log(validationResult.value);
+  // console.log(validationResult.value);
 
   // check if user send empty data
   if (Object.keys(validationResult.value).length === 0) {

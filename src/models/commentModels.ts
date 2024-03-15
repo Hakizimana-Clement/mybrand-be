@@ -14,6 +14,7 @@ const commentSchema = new Schema(
       type: String,
       required: true,
     },
+
     blog_id: {
       type: Schema.Types.ObjectId,
       ref: "Blog",

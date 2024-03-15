@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 const secretKey = process.env.SECRET as string;
 
 // create jwt token
-const createToken = (_id: object) => {
-  return jwt.sign({ _id }, secretKey, { expiresIn: "1d" });
+const createToken = (data: object) => {
+  return jwt.sign({ data }, secretKey, { expiresIn: "1d" });
 };
 
 ////////////////////////// Signup /////////////////////////////////////
@@ -27,15 +27,15 @@ const signupUser = async (req: Request, res: Response) => {
     const user = await User.create({ name, email, password: hash });
 
     // create token
-    const token = createToken(user._id);
+    const token = createToken(user);
 
-    // res.status(201).json({ email, token });
-    res
-      .status(201)
-      .json({ status: "201", message: "success", data: { email, token } });
+    res.status(201).json({
+      status: "201",
+      message: "Signup successfully",
+      data: { email, token },
+    });
     // console.log(user);
   } catch (error: any) {
-    // console.log("error ", error);
     res
       .status(400)
       .json({ status: "400", message: "Bad request", error: error.message });
@@ -65,13 +65,13 @@ const loginUser = async (req: Request, res: Response) => {
     }
 
     // create token
-    const token = createToken(user._id);
+    const token = createToken(user);
 
-    res
-      .status(200)
-      .json({ status: "200", message: "success", data: { email, token } });
-
-    console.log(user);
+    res.status(200).json({
+      status: "200",
+      message: "Login successfully",
+      data: { email, token },
+    });
   } catch (error: any) {
     res
       .status(404)
