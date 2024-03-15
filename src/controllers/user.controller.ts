@@ -10,20 +10,11 @@ const createToken = (_id: object) => {
   return jwt.sign({ _id }, secretKey, { expiresIn: "2d" });
 };
 
-////////////////////////// Login /////////////////////////////////////
-const loginUser = async (req: Request, res: Response) => {
-  res.json({ message: "login" });
-};
-
 ////////////////////////// Signup /////////////////////////////////////
 const signupUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
 
   try {
-    //validation password
-    if (!validator.isStrongPassword(password)) {
-      throw Error("Password not strong enough");
-    }
     // Email
     const isEmailExist = await User.findOne({ email });
     if (isEmailExist) {
@@ -44,6 +35,38 @@ const signupUser = async (req: Request, res: Response) => {
   } catch (error: any) {
     // console.log("error ", error);
     res.status(400).json({ error: error.message });
+  }
+};
+
+////////////////////////// Login /////////////////////////////////////
+const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    // validation
+    if (!email || !password) {
+      throw Error("All fields must be filled");
+    }
+    // check use email exist
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw Error("Invalid email");
+    }
+
+    // check password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    // password not match
+    if (!passwordMatch) {
+      throw Error("Invalid password");
+    }
+
+    console.log(user);
+    // create token
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
+  } catch (error: any) {
+    res.status(404).json({ error: error.message });
   }
 };
 
