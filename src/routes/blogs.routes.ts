@@ -1,3 +1,7 @@
+// import express and router
+import express from "express";
+const blogRouter = express.Router();
+
 // import blogs controller
 import {
   httpGetAllBlogs,
@@ -7,18 +11,19 @@ import {
   httpDeleteBlog,
 } from "../controllers/blog.controllers";
 
-// validation
-import isValid from "../middleware/blogMiddleware";
-import isUpdateValid from "../middleware/blogUpdateMiddleware";
-
+// import like
+import { getAllLikes, createLike } from "../controllers/like.controllers";
+// import comment
 import {
   createComment,
   getAllComments,
 } from "../controllers/comment.controllers";
+
+//////////// validation //////////////
+import isValid from "../middleware/blogMiddleware";
+import isUpdateValid from "../middleware/blogUpdateMiddleware";
 import isCommentValid from "../middleware/commentMiddleware";
-// const commentRouter = express.Router();
-import express from "express";
-const blogRouter = express.Router();
+import isLikeValid from "../middleware/likeMiddleware";
 
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
@@ -34,12 +39,19 @@ blogRouter
   // Delete blog
   .delete("/:id", httpDeleteBlog)
 
-  // commentRouter
+  ////////////////////////////// COMMENT ROUTES /////////////////////////////////////
   // get all comment
   .get("/:id/comments", getAllComments)
 
   // Create comment
-  .post("/:id/comments", isCommentValid, createComment);
+  .post("/:id/comments", isCommentValid, createComment)
+
+  ////////////////////////////// LIKE ROUTES /////////////////////////////////////
+
+  // get all likes
+  .get("/:id/likes", getAllLikes)
+  // create like
+  .post("/:id/likes", isLikeValid, createLike);
 
 // export all routers
 export default blogRouter;
