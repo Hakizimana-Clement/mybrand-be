@@ -11,13 +11,21 @@ const createComment = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ error: "Blog doesn't exist" });
+      return res.status(404).json({
+        status: "404",
+        message: "Not found",
+        error: "Blog doesn't exist",
+      });
     }
 
     const oneBlog = await BlogModel.findById(id);
 
     if (!oneBlog) {
-      return res.status(404).json({ error: "Blog doesn't exist" });
+      return res.status(404).json({
+        status: "404",
+        message: "Not found",
+        error: "Blog doesn't exist",
+      });
     }
 
     // create new comments
@@ -34,10 +42,16 @@ const createComment = async (req: Request, res: Response) => {
     oneBlog.comments.push(newComment);
 
     await oneBlog.save();
-    res.status(201).json({ message: "Success", comments: newComment });
+    res
+      .status(201)
+      .json({ status: "201", message: "Created", comments: newComment });
   } catch (error) {
     console.log(error);
-    res.status(400).json({ error: "bad request" });
+
+    res.status(404).json({
+      status: "404",
+      message: "bad request",
+    });
   }
 };
 
@@ -51,16 +65,33 @@ const getAllComments = async (req: Request, res: Response) => {
   try {
     // check if is valid
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({ error: "Blog doesn't exist" });
+      return res.status(404).json({
+        status: "404",
+        message: "Not found",
+        error: "Blog doesn't exist",
+      });
     }
 
     const blogId = await BlogModel.findById(id);
-    if (!blogId) return res.status(404).json({ error: "Blog doesn't exist" });
+    if (!blogId) {
+      return res.status(404).json({
+        status: "404",
+        message: "Not found",
+        error: "Blog doesn't exist",
+      });
+    }
+
     const blogComments = blogId.comments;
     // console.log(blogComments);
-    res.status(200).json({ message: "Success", comments: blogComments });
+    res
+      .status(200)
+      .json({ status: "200", message: "Success", comments: blogComments });
   } catch (error) {
-    res.status(404).json({ error: "Blog doesn't exist !!!" });
+    res.status(404).json({
+      status: "404",
+      message: "Not found",
+      error: "Blog doesn't exist",
+    });
   }
 };
 export { createComment, getAllComments };

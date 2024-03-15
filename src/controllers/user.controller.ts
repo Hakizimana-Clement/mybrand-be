@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
 import User from "../models/userModels";
 import bcrypt from "bcrypt";
-import validator from "validator";
 import jwt from "jsonwebtoken";
 const secretKey = process.env.SECRET as string;
 
 // create jwt token
 const createToken = (_id: object) => {
-  return jwt.sign({ _id }, secretKey, { expiresIn: "2d" });
+  return jwt.sign({ _id }, secretKey, { expiresIn: "1d" });
 };
 
 ////////////////////////// Signup /////////////////////////////////////
@@ -30,11 +29,16 @@ const signupUser = async (req: Request, res: Response) => {
     // create token
     const token = createToken(user._id);
 
-    res.status(201).json({ email, token });
+    // res.status(201).json({ email, token });
+    res
+      .status(201)
+      .json({ status: "201", message: "success", data: { email, token } });
     // console.log(user);
   } catch (error: any) {
     // console.log("error ", error);
-    res.status(400).json({ error: error.message });
+    res
+      .status(400)
+      .json({ status: "400", message: "Bad request", error: error.message });
   }
 };
 
@@ -60,13 +64,18 @@ const loginUser = async (req: Request, res: Response) => {
       throw Error("Invalid password");
     }
 
-    console.log(user);
     // create token
     const token = createToken(user._id);
 
-    res.status(200).json({ email, token });
+    res
+      .status(200)
+      .json({ status: "200", message: "success", data: { email, token } });
+
+    console.log(user);
   } catch (error: any) {
-    res.status(404).json({ error: error.message });
+    res
+      .status(404)
+      .json({ status: "400", message: "Not Found", error: error.message });
   }
 };
 
