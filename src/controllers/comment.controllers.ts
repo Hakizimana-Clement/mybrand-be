@@ -40,7 +40,7 @@ const createComment = async (req: Request, res: Response) => {
     // save in comment collection
     await newComment.save();
 
-    // // Here i have problem i can push
+    // save in blog comment array
     oneBlog.comments.push(newComment._id);
     await oneBlog.save();
 

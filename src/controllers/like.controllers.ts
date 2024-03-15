@@ -20,6 +20,14 @@ const getAllLikes = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Blog doesn't exist" });
     }
 
+    // => blog details with likes
+    // const blogWithLike = await blogModel.findById(id).populate("likes");
+    // res.status(200).json({ message: "success", blog: blogWithLike });
+
+    //=> blog with likes without enought details
+    // res.status(200).json({ message: "success", blog: oneBlog });
+
+    //=> likes only
     res.status(200).json({ message: "success", likes: oneBlog.likes });
   } catch (error) {
     return res.status(404).json({ error: "Blog doesn't exist" });
@@ -52,35 +60,29 @@ const createLike = async (req: Request, res: Response) => {
         error: "Blog doesn't exist",
       });
     }
-
-    // check if user provide false as value
-    const likeValue = req.body.like;
-    if (likeValue === false) {
-      return res.status(400).json({
-        status: "400",
-        message: "bad request",
-        error: "Please provide like value",
-      });
-    }
-
     // step 2. create new like
     const newLike = new likeModel({
-      like: likeValue,
       blog_id: id,
     });
     // step 3. save like in like collection (table)
     await newLike.save();
-
     // step 4. add like in one blog
-    oneBlog.likes.push(newLike);
-    // console.log(oneBlog.likes);
-
+    oneBlog.likes.push(newLike._id);
     // step 5. save in blog
     await oneBlog.save();
+    // console.log(newLike, oneBlog);
 
+    // step 5.2. get blog with like id
+    // const blogData = await blogModel.findById(id).populate("blog");
     // step 6. return the response of like after to create it
-    res.status(201).json({ status: "201", message: "Created", Like: newLike });
+    res.status(201).json({
+      status: "201",
+      message: "Created",
+      Like: newLike,
+    });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ status: "500", error: "Internal server Error" });
   }
 };

@@ -23,7 +23,6 @@ import {
 import isValid from "../middleware/blogMiddleware";
 import isUpdateValid from "../middleware/blogUpdateMiddleware";
 import isCommentValid from "../middleware/commentMiddleware";
-import isLikeValid from "../middleware/likeMiddleware";
 
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
@@ -51,7 +50,7 @@ blogRouter
   // get all likes
   .get("/:id/likes", getAllLikes)
   // create like
-  .post("/:id/likes", isLikeValid, createLike);
+  .post("/:id/likes", createLike);
 
 // export all routers
 export default blogRouter;
