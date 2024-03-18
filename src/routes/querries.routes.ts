@@ -6,14 +6,14 @@ import {
   httpDeleteQuery,
 } from "../controllers/query.controllers";
 import isQuerryValid from "../middleware/querryMiddleware";
-import authCheck from "../middleware/authCheck";
+import { isAdmin } from "../middleware/authenticationMiddleware";
 
 querriesRouter
   // get all comment
-  .get("/", authCheck(["user", "admin"]), httpGetAllQuerries)
+  .get("/", isAdmin, httpGetAllQuerries)
   // Create comment
-  .post("/", isQuerryValid, httpCreateQuery)
+  .post("/", isAdmin, isQuerryValid, httpCreateQuery)
   // delete comment
-  .delete("/:id", authCheck(["user", "admin"]), httpDeleteQuery);
+  .delete("/:id", isAdmin, httpDeleteQuery);
 
 export default querriesRouter;

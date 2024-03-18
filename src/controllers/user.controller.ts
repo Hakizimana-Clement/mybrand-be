@@ -28,18 +28,18 @@ const signupUser = async (req: Request, res: Response) => {
     const hash = await bcrypt.hash(password, salt);
     // save in model
     const user = await User.create({ name, email, password: hash, role });
-    const dataToSendInToken = {
-      id: user._id,
-      role: user.role,
-    };
+    // const dataToSendInToken = {
+    //   id: user._id,
+    //   role: user.role,
+    // };
     // create token
-    const token = createToken(dataToSendInToken);
+    // const token = createToken(dataToSendInToken);
     // const token = createToken(user._id);
 
     res.status(201).json({
       status: "201",
       message: "Signup successfully",
-      data: { email, token },
+      // token: { email, token },
     });
     // console.log(user);
   } catch (error: any) {
@@ -71,14 +71,14 @@ const loginUser = async (req: Request, res: Response) => {
     if (!passwordMatch) {
       throw Error("Wrong credential");
     }
-
+    //user
     // create token
-    const token = createToken({ id: user._id, role: user.role });
+    const token = createToken({ _id: user._id, role: user.role });
 
     res.status(200).json({
       status: "200",
       message: "Login successfully",
-      data: { email, token },
+      token: token,
     });
   } catch (error: any) {
     res

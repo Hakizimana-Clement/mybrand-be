@@ -6,7 +6,6 @@ const commentSchema = Joi.object({
   name: Joi.string().required().min(4).max(10),
   email: Joi.string().required().email(),
   comment: Joi.string().required().max(500),
-  role: Joi.string(),
 });
 
 // step 3.validate function
