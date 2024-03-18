@@ -7,7 +7,8 @@ import isLoginValid from "../middleware/loginMiddleware";
 
 authRouter
   // login
-  .post("/login", isLoginValid, loginUser)
+  // .post("/login", isLoginValid, loginUser)
+  .post("/login", loginUser)
   // singup
   .post("/signup", isSignupValid, signupUser);
 

@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 const secretKey = process.env.SECRET as string;
 
 // create jwt token
-const createToken = (data: object) => {
-  return jwt.sign({ data }, secretKey, { expiresIn: "1d" });
+const createToken = (_id: object) => {
+  return jwt.sign({ _id }, secretKey, { expiresIn: "1d" });
 };
 
 ////////////////////////// Signup /////////////////////////////////////
@@ -27,7 +27,7 @@ const signupUser = async (req: Request, res: Response) => {
     const user = await User.create({ name, email, password: hash });
 
     // create token
-    const token = createToken(user);
+    const token = createToken(user._id);
 
     res.status(201).json({
       status: "201",
@@ -37,8 +37,9 @@ const signupUser = async (req: Request, res: Response) => {
     // console.log(user);
   } catch (error: any) {
     res
-      .status(400)
-      .json({ status: "400", message: "Bad request", error: error.message });
+      .status(409)
+      .json({ status: "409", message: "Conflict", error: error.message });
+    // .json({ status: "409", error: error.message });
   }
 };
 
@@ -61,11 +62,11 @@ const loginUser = async (req: Request, res: Response) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
     // password not match
     if (!passwordMatch) {
-      throw Error("Invalid password");
+      throw Error("Wrong credential");
     }
 
     // create token
-    const token = createToken(user);
+    const token = createToken(user._id);
 
     res.status(200).json({
       status: "200",
@@ -74,8 +75,8 @@ const loginUser = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res
-      .status(404)
-      .json({ status: "400", message: "Not Found", error: error.message });
+      .status(401)
+      .json({ status: "401", message: "Unauthorized", error: error.message });
   }
 };
 

@@ -26,7 +26,7 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exsit",
+        error: "Blog Not Found",
       });
     }
     // step 3. use findOne method
@@ -36,7 +36,7 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exsit",
+        error: "Blog Not Found",
       });
     // step 4. send blog data
 
@@ -47,7 +47,7 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
     res.status(404).json({
       status: "404",
       message: "Not found",
-      error: "Blog doesn't exsit",
+      error: "Blog Not Found",
     });
   }
 };
@@ -81,7 +81,8 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
     return res.status(400).json({
       status: "400",
       message: "Bad request",
-      error: "Please fill fieds to update",
+      error:
+        "Incomplete Fields: Please fill in all the required fields to update the blog",
     });
   }
   try {
@@ -95,7 +96,7 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exist",
+        error: "Blog Not Found",
       });
     }
     res.status(200).json({ status: "200", message: "Success", blog: blog });
@@ -103,7 +104,7 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
     res.status(404).json({
       status: "404",
       message: "Not found",
-      error: "Blog doesn't exist",
+      error: "Blog Not Found",
     });
   }
 };
@@ -119,7 +120,7 @@ const httpDeleteBlog = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exist",
+        error: "Blog Not Found",
       });
     }
     // step 1. find be id and delete
@@ -130,7 +131,7 @@ const httpDeleteBlog = async (req: Request, res: Response) => {
     res.status(404).json({
       status: "404",
       message: "Not found",
-      error: "Blog doesn't exist",
+      error: "Blog Not Found",
     });
   }
 };

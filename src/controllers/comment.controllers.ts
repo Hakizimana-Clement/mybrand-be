@@ -15,7 +15,7 @@ const createComment = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exist",
+        error: "Blog Not Found",
       });
     }
 
@@ -25,7 +25,7 @@ const createComment = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exist",
+        error: "Blog Not Found",
       });
     }
 
@@ -57,7 +57,7 @@ const createComment = async (req: Request, res: Response) => {
     res.status(201).json({
       status: "201",
       message: "Created",
-      comments: newComment,
+      comments: newComment.comment,
     });
   } catch (error) {
     console.log(error);
@@ -82,7 +82,7 @@ const getAllComments = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exist",
+        error: "Comment Not Found",
       });
     }
 
@@ -92,29 +92,29 @@ const getAllComments = async (req: Request, res: Response) => {
       return res.status(404).json({
         status: "404",
         message: "Not found",
-        error: "Blog doesn't exist",
+        error: "Comment Not Found",
       });
     }
 
     // => blog data with comment
-    const blogComment = await BlogModel.findById(id).populate("comments");
-    res.status(200).json({
-      status: "200",
-      message: "Success",
-      blog: blogComment,
-    });
-
-    // => comments only
+    // const blogComment = await BlogModel.findById(id).populate("comments");
     // res.status(200).json({
     //   status: "200",
     //   message: "Success",
-    //   comments: blogId,
+    //   blog: blogComment,
     // });
+
+    // // => comments only
+    res.status(200).json({
+      status: "200",
+      message: "Success",
+      comments: blogId.comments,
+    });
   } catch (error) {
     res.status(404).json({
       status: "404",
       message: "Not found",
-      error: "Blog doesn't exist",
+      error: "Comment Not Found",
     });
   }
 };

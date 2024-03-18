@@ -45,20 +45,18 @@ const httpDeleteQuery = async (req: Request, res: Response) => {
     const blog = await Query.findOneAndDelete({ _id: id });
 
     if (!blog)
-      return res
-        .status(404)
-        .json({
-          status: "404",
-          message: "Not found",
-          error: "Query doesn't exist",
-        });
+      return res.status(404).json({
+        status: "404",
+        message: "Not found",
+        error: "Query Not Found",
+      });
 
-    res.status(204).json();
+    res.status(204).json({ status: "201", message: "delete successfully" });
   } catch (error) {
     res.status(404).json({
       status: "404",
       message: "Not found",
-      error: "Query doesn't exist",
+      error: "Query Not Found",
     });
   }
 };

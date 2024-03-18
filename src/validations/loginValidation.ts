@@ -4,7 +4,7 @@ import Joi from "joi";
 // step 2. create login schema
 const loginSchema = Joi.object({
   email: Joi.string().required().email(),
-  password: Joi.string().required().min(8).max(8),
+  password: Joi.string().required(),
 });
 
 // step 3. create valid function
