@@ -5,15 +5,18 @@ import jwt from "jsonwebtoken";
 const secretKey = process.env.SECRET as string;
 
 // create jwt token
-const createToken = (_id: object) => {
-  return jwt.sign({ _id }, secretKey, { expiresIn: "1d" });
+const createToken = (user: object) => {
+  return jwt.sign({ user }, secretKey, { expiresIn: "1d" });
 };
 
 ////////////////////////// Signup /////////////////////////////////////
 const signupUser = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   try {
+    // if (!role) {
+    //   throw Error("provide fill role");
+    // }
     // Email
     const isEmailExist = await User.findOne({ email });
     if (isEmailExist) {
@@ -24,10 +27,14 @@ const signupUser = async (req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
     // save in model
-    const user = await User.create({ name, email, password: hash });
-
+    const user = await User.create({ name, email, password: hash, role });
+    const dataToSendInToken = {
+      id: user._id,
+      role: user.role,
+    };
     // create token
-    const token = createToken(user._id);
+    const token = createToken(dataToSendInToken);
+    // const token = createToken(user._id);
 
     res.status(201).json({
       status: "201",
@@ -66,7 +73,7 @@ const loginUser = async (req: Request, res: Response) => {
     }
 
     // create token
-    const token = createToken(user._id);
+    const token = createToken({ id: user._id, role: user.role });
 
     res.status(200).json({
       status: "200",

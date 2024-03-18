@@ -20,9 +20,10 @@ import {
 } from "../controllers/comment.controllers";
 
 //////////// validation //////////////
-import isValid from "../middleware/blogMiddleware";
+import { isDeleteValid, isValid } from "../middleware/blogMiddleware";
 import isUpdateValid from "../middleware/blogUpdateMiddleware";
 import isCommentValid from "../middleware/commentMiddleware";
+import authCheck from "../middleware/authCheck";
 
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
@@ -30,27 +31,32 @@ import isCommentValid from "../middleware/commentMiddleware";
 blogRouter
   .get("/", httpGetAllBlogs)
   // Create blog
-  .post("/", isValid, httpCreateBlog)
+  .post("/", isValid, authCheck(["user", "admin"]), httpCreateBlog)
   // Get individual blog
   .get("/:id", httpGetSingleBlog)
   // Update blog
-  .patch("/:id", isUpdateValid, httpUpdateBlog)
+  .patch("/:id", isUpdateValid, authCheck(["user", "admin"]), httpUpdateBlog)
   // Delete blog
-  .delete("/:id", httpDeleteBlog)
+  .delete("/:id", isDeleteValid, authCheck(["user", "admin"]), httpDeleteBlog)
 
   ////////////////////////////// COMMENT ROUTES /////////////////////////////////////
   // get all comment
-  .get("/:id/comments", getAllComments)
+  .get("/:id/comments", authCheck(["user", "admin"]), getAllComments)
 
   // Create comment
-  .post("/:id/comments", isCommentValid, createComment)
+  .post(
+    "/:id/comments",
+    authCheck(["user", "admin"]),
+    isCommentValid,
+    createComment
+  )
 
   ////////////////////////////// LIKE ROUTES /////////////////////////////////////
 
   // get all likes
-  .get("/:id/likes", getAllLikes)
+  .get("/:id/likes", authCheck(["user", "admin"]), getAllLikes)
   // create like
-  .post("/:id/likes", createLike);
+  .post("/:id/likes", authCheck(["user", "admin"]), createLike);
 
 // export all routers
 export default blogRouter;

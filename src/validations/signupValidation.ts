@@ -14,6 +14,7 @@ const signupSchema = Joi.object({
       "string.pattern.base":
         "Password must contain at least one lowercase letter, one uppercase letter, one special character, and be at least 8 characters long",
     }),
+  role: Joi.string(),
 });
 // step 3. create function for validation
 const signupValid = (signupData: object) => {

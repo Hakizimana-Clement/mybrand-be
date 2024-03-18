@@ -8,8 +8,13 @@ import likeModel from "../models/likeModels";
 const getAllLikes = async (req: Request, res: Response) => {
   const { id } = req.params;
   console.log(id);
+  const { role } = req.body;
 
   try {
+    if (!role) {
+      throw Error("role is required");
+    }
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ error: "Blog Not Found" });
     }
@@ -42,8 +47,12 @@ const getAllLikes = async (req: Request, res: Response) => {
 
 const createLike = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { role } = req.body;
 
   try {
+    if (!role) {
+      throw Error("role is required");
+    }
     // step 1. checking is blog with that id exist
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({

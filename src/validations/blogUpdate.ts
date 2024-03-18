@@ -6,6 +6,7 @@ const updateBlogSchema = Joi.object({
   writeImage: Joi.string(),
   blogImage: Joi.string(),
   content: Joi.string().min(100).max(5000),
+  role: Joi.string().required(),
 });
 
 const validateUpdateBlog = (blogData: object) => {
