@@ -1,5 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
 import mongoose from "mongoose";
-const databaseUrl = process.env.MONGO_URL as string;
+// const databaseUrl = process.env.MONGO_URL as string;
+const databaseUrl = process.env.MONGO_URL_TEST as string;
 
 // connection on (open) event
 mongoose.connection.on("open", () => {

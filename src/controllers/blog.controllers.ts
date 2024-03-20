@@ -25,7 +25,7 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({
         status: "404",
-        message: "Not found",
+        message: "Blog Not found",
         error: "Blog Not Found",
       });
     }
@@ -35,19 +35,19 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
     if (!blog)
       return res.status(404).json({
         status: "404",
-        message: "Not found",
+        message: "Blog Not found",
         error: "Blog Not Found",
       });
     // step 4. send blog data
 
-    res.status(200).json({ status: "200", message: "success", blogs: blog });
+    res.status(200).json({ status: "200", message: "success", blog: blog });
   } catch (error) {
     // if id not found send error message
     console.log(error);
     res.status(404).json({
       status: "404",
-      message: "Not found",
-      error: "Blog Not Found",
+      message: "Blog Not found",
+      // error: "Blog Not Found",
     });
   }
 };
@@ -67,7 +67,7 @@ const httpCreateBlog = async (req: Request, res: Response) => {
   // step 2. save them
   await blog.save();
   // step 3. send data
-  res.status(201).json({ status: "201", message: "created", blog: blog });
+  res.status(201).json({ status: "201", message: "Blog created", blog: blog });
 };
 // //////////////////////////////////
 // // Update blog
@@ -76,19 +76,19 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
   // step 1. Get id from client
   const { id } = req.params;
   // check if data is empty before saving to database
-  const allData = req.body;
-  if (Object.keys(allData).length === 0) {
-    return res.status(400).json({
-      status: "400",
-      message: "Bad request",
-      error:
-        "Incomplete Fields: Please fill in all the required fields to update the blog",
-    });
-  }
+  // const allData = req.body;
+  // if (Object.keys(allData).length === 0) {
+  //   return res.status(400).json({
+  //     status: "400",
+  //     message: "Bad request",
+  //     error:
+  //       "Incomplete Fields: Please fill in all the required fields to update the blog",
+  //   });
+  // }
   try {
     const blog = await Blog.findOneAndUpdate(
       { _id: id },
-      { ...allData },
+      { ...req.body },
       { new: true }
     );
 

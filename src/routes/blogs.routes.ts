@@ -31,7 +31,6 @@ import { isAdmin, isLoggedIn } from "../middleware/authenticationMiddleware";
 blogRouter
   .get("/", httpGetAllBlogs)
   // Create blog
-  // .post("/", isAdmin, isValid, httpCreateBlog)
   .post("/", isAdmin, isValid, httpCreateBlog)
   // Get individual blog
   .get("/:id", httpGetSingleBlog)
