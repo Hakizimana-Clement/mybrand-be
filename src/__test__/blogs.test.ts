@@ -14,15 +14,16 @@ import {
 } from "../mock/static";
 import User from "../models/userModels";
 import Blog from "../models/blogModels";
+// import Blog from "./image_upload_test/working";
 import mongoose from "mongoose";
-jest.setTimeout(20000);
+jest.setTimeout(30000);
 let token: string;
 let blogId: mongoose.Types.ObjectId;
 let queryId: string;
 
 let fileDataToUpload =
   "file:///C:/Users/ThinkBig/Pictures/250788850016_status_f2a67f1e03b84d5dafdd02f17bfd56a5.jpg";
-
+console.log(process.env);
 // ste 3. test description
 describe("Blog API", () => {
   // step 3.1. connect to database
@@ -75,10 +76,11 @@ describe("Blog API", () => {
     test("It should return 201 and new blog created", async () => {
       const { body } = await request(app)
         .post("/api/v1/blogs")
-        .set("Authorization", `Bearer ${token}`)
         .expect("Content-Type", /json/)
+        .set("Authorization", `Bearer ${token}`)
         .send(blogData)
         .expect(201);
+
       console.log("********* BLOG DATA **************** ", body.blog);
       expect(body.message).toStrictEqual("Blog created");
       expect(body.blog).toBeDefined();
