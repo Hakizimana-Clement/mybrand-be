@@ -28,7 +28,11 @@ const httpCreateQuery = async (req: Request, res: Response) => {
     });
 
     await query.save();
-    res.status(201).json({ status: "201", message: "Created", query: query });
+    res.status(201).json({
+      status: "201",
+      message: "Created querry successfully",
+      query: query,
+    });
   } catch (error) {
     res
       .status(400)
@@ -47,11 +51,11 @@ const httpDeleteQuery = async (req: Request, res: Response) => {
     if (!blog)
       return res.status(404).json({
         status: "404",
-        message: "Not found",
+        message: "Notttt found",
         error: "Query Not Found",
       });
 
-    res.status(204).json({ status: "201", message: "delete successfully" });
+    res.status(204).json({ status: "204", message: "delete successfully" });
   } catch (error) {
     res.status(404).json({
       status: "404",

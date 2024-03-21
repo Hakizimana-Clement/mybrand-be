@@ -1,7 +1,12 @@
+import dotenv from "dotenv";
+dotenv.config();
 // const Blog = require("../models/blogModel");
 import { Request, Response } from "express";
 import Blog from "../models/blogModels";
 import mongoose from "mongoose";
+////////////////////// cloudinary ///////////////////////////////
+import cloudinary from "../utils/cloudinary";
+
 ///////////////////////////////////
 // Get all blogs
 //////////////////////////////////
@@ -43,7 +48,6 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
     res.status(200).json({ status: "200", message: "success", blog: blog });
   } catch (error) {
     // if id not found send error message
-    console.log(error);
     res.status(404).json({
       status: "404",
       message: "Blog Not found",
@@ -55,19 +59,37 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
 //////////////////////////////////
 // Create blog
 //////////////////////////////////
+// console.log(req.file);
+// console.log(req.body);
 const httpCreateBlog = async (req: Request, res: Response) => {
-  // step 1. Take all data from client but on object
-  const blog = new Blog({
-    title: req.body.title,
-    writer: req.body.writer,
-    writeImage: req.body.writeImage,
-    blogImage: req.body.blogImage,
-    content: req.body.content,
-  });
-  // step 2. save them
-  await blog.save();
-  // step 3. send data
-  res.status(201).json({ status: "201", message: "Blog created", blog: blog });
+  const fileData = req.file;
+  console.log("@@@@@@@@@@@@@@@@@@@@@@@", fileData);
+  try {
+    if (!fileData) {
+      return console.log("##############", fileData);
+      // throw new Error("File not found in the request");
+    }
+    const blogImage = await cloudinary.uploader.upload(fileData.path);
+    console.log(blogImage.secure_url);
+
+    // step 1. Take all data from client but on object
+    const blog = new Blog({
+      title: req.body.title,
+      writer: req.body.writer,
+      writeImage: req.body.writeImage,
+      blogImage: blogImage.secure_url,
+      content: req.body.content,
+    });
+    // step 2. save them
+    await blog.save();
+    // step 3. send data
+    res
+      .status(201)
+      .json({ status: "201", message: "Blog created", blog: blog });
+  } catch (error) {
+    console.error("Error creating blog:", error);
+    res.status(500).json({ status: "500", message: "Internal Server Error" });
+  }
 };
 // //////////////////////////////////
 // // Update blog
@@ -99,7 +121,9 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
         error: "Blog Not Found",
       });
     }
-    res.status(200).json({ status: "200", message: "Success", blog: blog });
+    res
+      .status(200)
+      .json({ status: "200", message: "Blog update successfully", blog: blog });
   } catch (error) {
     res.status(404).json({
       status: "404",
@@ -126,7 +150,7 @@ const httpDeleteBlog = async (req: Request, res: Response) => {
     // step 1. find be id and delete
     await Blog.deleteOne({ _id: id });
     //  step 2. send not content code status and then send empty object
-    res.status(204).json({ status: "201", message: "No content" });
+    res.status(204).json({ status: "204", message: "No content" });
   } catch (error) {
     res.status(404).json({
       status: "404",

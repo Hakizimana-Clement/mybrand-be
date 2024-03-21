@@ -34,10 +34,4 @@ export class JwtUtils {
       });
     });
   }
-
-  // const verfiyAccessToken = <T>(data: T) => {
-  //   // jwt take two params: 1. verfity token verify and 2.secert pass key
-  //   const secert = process.env.SECRET;
-  //   return jwt.verify(String(data), secert as string);
-  // };
 }

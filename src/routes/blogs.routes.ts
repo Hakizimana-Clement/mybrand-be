@@ -23,7 +23,10 @@ import {
 import { isDeleteValid, isValid } from "../middleware/blogMiddleware";
 import isUpdateValid from "../middleware/blogUpdateMiddleware";
 import isCommentValid from "../middleware/commentMiddleware";
-import { isAdmin, isLoggedIn } from "../middleware/authenticationMiddleware";
+// import { isAdminNow, isLoggedInNow } from "../middleware/authenticationMiddleware";
+import { isAdmin, isLogin } from "../middleware/authCheck";
+// middleware
+import upload from "../middleware/multerMiddleware";
 
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
@@ -31,28 +34,36 @@ import { isAdmin, isLoggedIn } from "../middleware/authenticationMiddleware";
 blogRouter
   .get("/", httpGetAllBlogs)
   // Create blog
-  .post("/", isAdmin, isValid, httpCreateBlog)
+  // .post("/", httpCreateBlog)
+  .post("/", isAdmin, upload.single("blogImage"), httpCreateBlog)
+  // .post("/", isAdmin, isValid, upload.single("blogImage"), httpCreateBlog)
+
+  // .post("/", isAdmin, isValid, httpCreateBlog)
   // Get individual blog
   .get("/:id", httpGetSingleBlog)
   // Update blog
-  .patch("/:id", isAdmin, isUpdateValid, httpUpdateBlog)
+  .patch("/:id", isAdmin, httpUpdateBlog)
+  // .patch("/:id", isAdmin, isUpdateValid, httpUpdateBlog)
+  // .patch("/:id", isAdminNow, httpUpdateBlog)
   // Delete blog
   .delete("/:id", isAdmin, httpDeleteBlog)
 
   ////////////////////////////// COMMENT ROUTES /////////////////////////////////////
   // get all comment
-  .get("/:id/comments", isLoggedIn, isAdmin, getAllComments)
+  .get("/:id/comments", isLogin, isAdmin, getAllComments)
 
   // Create comment
-  .post("/:id/comments", isLoggedIn, isAdmin, isCommentValid, createComment)
+  .post("/:id/comments", isLogin, isAdmin, isCommentValid, createComment)
 
   ////////////////////////////// LIKE ROUTES /////////////////////////////////////
 
   // get all likes
-  .get("/:id/likes", isLoggedIn, isAdmin, getAllLikes)
+  // .get("/:id/likes", isLogin, isAdmin, getAllLikes)
+  .get("/:id/likes", isAdmin, getAllLikes)
   // .get("/:id/likes", getAllLikes)
   // create like
-  .post("/:id/likes", isLoggedIn, isAdmin, createLike);
+  // .post("/:id/likes", isLogin, isAdmin, createLike);
+  .post("/:id/likes", isAdmin, createLike);
 
 // export all routers
 export default blogRouter;

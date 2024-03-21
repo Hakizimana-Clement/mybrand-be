@@ -3,7 +3,7 @@ import Joi from "joi";
 
 // step 2. create joi schema
 const querrySchema = Joi.object({
-  name: Joi.string().required().min(4).max(15),
+  name: Joi.string().required().min(4).max(20),
   email: Joi.string().required().email(),
   message: Joi.string().required().min(8).max(400),
 });
