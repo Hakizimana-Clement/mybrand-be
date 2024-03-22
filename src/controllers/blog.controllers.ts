@@ -66,11 +66,12 @@ const httpCreateBlog = async (req: Request, res: Response) => {
   console.log("@@@@@@@@@@@@@@@@@@@@@@@", fileData);
   try {
     if (!fileData) {
-      return console.log("##############", fileData);
-      // throw new Error("File not found in the request");
+      console.log("##############", fileData);
+      throw new Error("File not found in the request");
     }
     const blogImage = await cloudinary.uploader.upload(fileData.path);
-    console.log(blogImage.secure_url);
+    // const blogImage = await cloudinary.uploader.upload(imageUpload(req.file));
+    // console.log(blogImage.secure_url);
 
     // step 1. Take all data from client but on object
     const blog = new Blog({

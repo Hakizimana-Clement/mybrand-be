@@ -169,87 +169,72 @@ describe("Blog API", () => {
         .expect(204);
     });
 
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   // QUERY
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   //////////////////////////////
-    //   // CREATE a querry
-    //   //////////////////////////////
-    //   test("It should return 201 for creating querry", async () => {
-    //     const { body } = await request(app)
-    //       .post("/api/v1/querries")
-    //       .expect("Content-Type", /json/)
-    //       .send(querryData)
-    //       .expect(201);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // QUERY
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////
+    // CREATE a querry
+    //////////////////////////////
+    test("It should return 201 for creating querry", async () => {
+      const { body } = await request(app)
+        .post("/api/v1/querries")
+        .expect("Content-Type", /json/)
+        .send(querryData)
+        .expect(201);
 
-    //     expect(body.message).toStrictEqual("Created querry successfully");
-    //     console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
-    //     queryId = body.query._id;
-    //   });
+      expect(body.message).toStrictEqual("Created querry successfully");
+      console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
+      queryId = body.query._id;
+    });
 
-    //   //////////////////////////////
-    //   // GET all quirries
-    //   //////////////////////////////
-    //   test("It should return 200 and list all of querries", async () => {
-    //     const { body } = await request(app)
-    //       .get("/api/v1/querries/")
-    //       .expect("Content-Type", /json/)
-    //       .set("Authorization", `Bearer ${token}`)
-    //       .expect(200);
+    //////////////////////////////
+    // GET all quirries
+    //////////////////////////////
+    test("It should return 200 and list all of querries", async () => {
+      const { body } = await request(app)
+        .get("/api/v1/querries/")
+        .expect("Content-Type", /json/)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
 
-    //     expect(body.message).toStrictEqual("success");
-    //     expect(body.querries).toBeDefined();
-    //   });
-    //   //////////////////////////////
-    //   // DELETE single querry
-    //   //////////////////////////////
-    //   test("It should return 204 for delete a single querry", async () => {
-    //     const { body } = await request(app)
-    //       .delete(`/api/v1/querries/${queryId}`)
-    //       .set("Authorization", `Bearer ${token}`)
-    //       .expect(204);
-    //   });
+      expect(body.message).toStrictEqual("success");
+      expect(body.querries).toBeDefined();
+    });
+    //////////////////////////////
+    // DELETE single querry
+    //////////////////////////////
+    test("It should return 204 for delete a single querry", async () => {
+      const { body } = await request(app)
+        .delete(`/api/v1/querries/${queryId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(204);
+    });
 
-    //   // DELETE ERROR NOT QUERY FOUND single querry
-    //   test("It should return 404 for wrong id passed in deleting a single querry", async () => {
-    //     const { body } = await request(app)
-    //       .delete(`/api/v1/querries/${34576543}`)
-    //       .set("Authorization", `Bearer ${token}`)
-    //       .expect(404);
-    //     expect(body.message).toStrictEqual("Not found");
-    //   });
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   // LIKE
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //   // CREATE LIKE
-    //   test("It should return 201 for create like on single post", async () => {
-    //     console.log("lllllllllllllllllllllllll", blogId);
-    //     const { body } = await request(app)
-    //       .post(`/api/v1/blogs/${blogId}/likes`)
-    //       // .post(`/api/v1/blogs/65fafb06a33612e96af6ce96/likes`)
-    //       .set("Authorization", `Bearer ${token}`)
-    //       .expect("Content-Type", /json/);
-    //     expect(body.message).toStrictEqual("Created");
-    //   });
+    // DELETE ERROR NOT QUERY FOUND single querry
+    test("It should return 404 for wrong id passed in deleting a single querry", async () => {
+      const { body } = await request(app)
+        .delete(`/api/v1/querries/${34576543}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(404);
+      expect(body.message).toStrictEqual("Not found");
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // LIKE
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CREATE LIKE
+    // test("It should return 201 for create like on single post", async () => {
+    //   console.log("lllllllllllllllllllllllll", blogId);
+    //   const { body } = await request(app)
+    //     .post(`/api/v1/blogs/${blogId}/likes`)
+    //     // .post(`/api/v1/blogs/65fafb06a33612e96af6ce96/likes`)
+    //     .set("Authorization", `Bearer ${token}`)
+    //     .expect("Content-Type", /json/);
+    //   expect(body.message).toStrictEqual("Created");
     // });
-    // .expect(201);
-
-    // // like test
-    // describe("Likes test", () => {
-    //   test("", () => {});
-    // });
-
-    // // comment test
-    // describe("Comment test", () => {
-    //   test("", () => {});
-    // });
-    // // authentication test
-    // describe("Comment test", () => {
-    //   test("", () => {});
   });
 });
 
