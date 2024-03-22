@@ -21,9 +21,6 @@ let token: string;
 let blogId: mongoose.Types.ObjectId;
 let queryId: string;
 
-let fileDataToUpload =
-  "file:///C:/Users/ThinkBig/Pictures/250788850016_status_f2a67f1e03b84d5dafdd02f17bfd56a5.jpg";
-console.log(process.env);
 // ste 3. test description
 describe("Blog API", () => {
   // step 3.1. connect to database
@@ -35,7 +32,7 @@ describe("Blog API", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany();
-    // await Blog.deleteMany();
+    await Blog.deleteMany();
     await mongoDisconnectToTestingDB();
   });
 

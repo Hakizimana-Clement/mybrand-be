@@ -1,5 +1,6 @@
+// routes
 // import express and router
-import express from "express";
+import express, { Request, Response } from "express";
 const blogRouter = express.Router();
 
 // import blogs controller
@@ -20,6 +21,15 @@ import {
 } from "../controllers/comment.controllers";
 
 //////////// validation //////////////
+// import { isDeleteValid, isValid } from "../middleware/blogMiddleware";
+// import isUpdateValid from "../middleware/blogUpdateMiddleware";
+// import isCommentValid from "../middleware/commentMiddleware";
+// // import { isAdminNow, isLoggedInNow } from "../middleware/authenticationMiddleware";
+// import { isAdmin, isLogin } from "../middleware/authCheck";
+// // middleware
+// import upload from "../middleware/multerMiddleware";
+// // import upload from "../models/blogModels";
+
 import { isDeleteValid, isValid } from "../middleware/blogMiddleware";
 import isUpdateValid from "../middleware/blogUpdateMiddleware";
 import isCommentValid from "../middleware/commentMiddleware";
@@ -27,7 +37,6 @@ import isCommentValid from "../middleware/commentMiddleware";
 import { isAdmin, isLogin } from "../middleware/authCheck";
 // middleware
 import upload from "../middleware/multerMiddleware";
-// import upload from "../models/blogModels";
 
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
@@ -131,7 +140,13 @@ blogRouter
    *               updatedAt: "2023-04-03T00:25:32.189Z"
    *               __v: 0
    */
-  .post("/", isAdmin, isValid, upload.single("blogImage"), httpCreateBlog)
+  .post("/", isAdmin, isValid, httpCreateBlog)
+  // .post("/", isAdmin, isValid, upload.single("blogImage"), httpCreateBlog)
+  // .post("/", isAdmin, upload.single("blogImage"), httpCreateBlog)
+  // .post("/", isAdmin, httpCreateBlog)
+  // .post("/", isAdmin, (req: Request, res: Response) => {
+  //   res.json({ mssg: "working" });
+  // })
 
   // Get individual blog
   .get("/:id", httpGetSingleBlog)

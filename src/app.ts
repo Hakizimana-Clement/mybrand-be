@@ -5,22 +5,11 @@ const app = express();
 // routes
 import apiRoutes from "./routes";
 
+// Use Express-Formidable middleware for parsing form data
 app.use(express.json());
-app.use("/api/v1/", pathAndMethodMiddleware, apiRoutes);
 
-// /**
-//  * @openapi
-//  * /api/v1:
-//  * get:
-//  *  tag:
-//  *    - blogs:
-//  *     description: Response if the app is up and running
-//  *     response:
-//  *      200:
-//  *        description: App is up and running
-//  * */
+app.use("/api/v1/", pathAndMethodMiddleware, apiRoutes);
 app.use("/api/v1/", pathAndMethodMiddleware, (req: Request, res: Response) =>
   res.status(200).json({ message: "Welcome to Blog API" })
 );
-
 export { app };

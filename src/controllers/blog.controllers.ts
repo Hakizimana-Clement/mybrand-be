@@ -6,6 +6,7 @@ import Blog from "../models/blogModels";
 import mongoose from "mongoose";
 ////////////////////// cloudinary ///////////////////////////////
 import cloudinary from "../utils/cloudinary";
+import uploadImage from "../utils/uploadImage";
 
 ///////////////////////////////////
 // Get all blogs
@@ -59,26 +60,27 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
 //////////////////////////////////
 // Create blog
 //////////////////////////////////
-// console.log(req.file);
-// console.log(req.body);
 const httpCreateBlog = async (req: Request, res: Response) => {
-  const fileData = req.file;
-  console.log("@@@@@@@@@@@@@@@@@@@@@@@", fileData);
+  console.log(req.body);
   try {
-    if (!fileData) {
-      console.log("##############", fileData);
-      throw new Error("File not found in the request");
+    // if (!req.body.blogImage) {
+    //   return res
+    //     .status(500)
+    //     .json({ message: "Image not found in the request" });
+    // }
+    if ("error" in uploadImage) {
+      return res.status(500).json({
+        message: "Error uploading image",
+        error: uploadImage.error,
+      });
     }
-    const blogImage = await cloudinary.uploader.upload(fileData.path);
-    // const blogImage = await cloudinary.uploader.upload(imageUpload(req.file));
-    // console.log(blogImage.secure_url);
-
+    const uploadImageToCloudinary = await uploadImage(req.body.blogImage);
     // step 1. Take all data from client but on object
     const blog = new Blog({
       title: req.body.title,
       writer: req.body.writer,
       writeImage: req.body.writeImage,
-      blogImage: blogImage.secure_url,
+      blogImage: uploadImageToCloudinary.secure_url,
       content: req.body.content,
     });
     // step 2. save them
@@ -92,6 +94,38 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     res.status(500).json({ status: "500", message: "Internal Server Error" });
   }
 };
+// with multer middleware
+
+// const httpCreateBlog = async (req: Request, res: Response) => {
+//   const fileData = req.file;
+//   console.log("@@@@@@@@@@@@@@@@@@@@@@@", fileData);
+//   try {
+//     if (!fileData) {
+//       return console.log("##############", fileData);
+//       // throw new Error("File not found in the request");
+//     }
+//     const blogImage = await cloudinary.uploader.upload(fileData.path);
+//     console.log(blogImage.secure_url);
+
+//     // step 1. Take all data from client but on object
+//     const blog = new Blog({
+//       title: req.body.title,
+//       writer: req.body.writer,
+//       writeImage: req.body.writeImage,
+//       blogImage: blogImage.secure_url,
+//       content: req.body.content,
+//     });
+//     // step 2. save them
+//     await blog.save();
+//     // step 3. send data
+//     res
+//       .status(201)
+//       .json({ status: "201", message: "Blog created", blog: blog });
+//   } catch (error) {
+//     console.error("Error creating blog:", error);
+//     res.status(500).json({ status: "500", message: "Internal Server Error" });
+//   }
+// };
 // //////////////////////////////////
 // // Update blog
 // //////////////////////////////////
