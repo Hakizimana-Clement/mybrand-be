@@ -21,14 +21,6 @@ import {
 } from "../controllers/comment.controllers";
 
 //////////// validation //////////////
-// import { isDeleteValid, isValid } from "../middleware/blogMiddleware";
-// import isUpdateValid from "../middleware/blogUpdateMiddleware";
-// import isCommentValid from "../middleware/commentMiddleware";
-// // import { isAdminNow, isLoggedInNow } from "../middleware/authenticationMiddleware";
-// import { isAdmin, isLogin } from "../middleware/authCheck";
-// // middleware
-// import upload from "../middleware/multerMiddleware";
-// // import upload from "../models/blogModels";
 
 import { isDeleteValid, isValid } from "../middleware/blogMiddleware";
 import isUpdateValid from "../middleware/blogUpdateMiddleware";
