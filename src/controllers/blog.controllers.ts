@@ -109,18 +109,21 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
 
 // newwwwwwwwwwwwww
 const httpCreateBlog = async (req: Request, res: Response) => {
-  console.log(req.file);
-  if (!req.file) {
-    console.log(req.file);
-    return res
-      .status(404)
-      .json({ status: "404", message: "Please add blog image  to continue" });
-  }
-  const uploadImageToCloudinary = await cloudinary.uploader.upload(
-    req.file?.path
+  console.log(
+    "ffffffffffffffffff file image fffffffffffffffffffffffffffff",
+    req.file
   );
-
   try {
+    if (!req.file) {
+      console.log(req.file);
+      return res
+        .status(404)
+        .json({ status: "404", message: "Please add blog image  to continue" });
+    }
+    const uploadImageToCloudinary = await cloudinary.uploader.upload(
+      req.file?.path
+    );
+
     // step 1. Take all data from client but on object
     const blog = new Blog({
       title: req.body.title,

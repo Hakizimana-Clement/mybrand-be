@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import request from "supertest";
 import {
   mongoConnectToTestingDB,
@@ -29,7 +31,7 @@ describe("Blog API", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany();
-    // await Blog.deleteMany({});
+    await Blog.deleteMany({});
     await mongoDisconnectToTestingDB();
   });
 
@@ -59,20 +61,21 @@ describe("Blog API", () => {
     });
   });
 
-  // describe("Blog routes", () => {
-  // Test case for creating a blog
-  test("Create Blog", async () => {
+  // // Test case for creating a blog
+  test("It should return 201 and Create new blog", async () => {
+    const imagePath = path.join(__dirname, "test-image.jpg");
+    const imageBuffer = fs.readFileSync(imagePath);
     // Send a POST request to the blog creation endpoint
     const { body } = await request(app)
       .post("/api/v1/blogs")
       .set("Authorization", `Bearer ${token}`)
-      .send(blogData)
+      .attach("blogImage", imageBuffer, { filename: "image.jpg" })
+      .field("title", blogData.title)
+      .field("writer", blogData.writer)
+      .field("content", blogData.content)
       .expect(201);
 
-    // Expect the body body to contain the created blog data
-    // expect(body.body).toHaveProperty("status", "201");
-    // expect(body.body).toHaveProperty("message", "Blog created");
-    // expect(body.blog).toHaveProperty("_id");
+    expect(body.blog).toHaveProperty("_id");
     expect(body.blog.title).toBe(blogData.title);
     expect(body.blog.writer).toBe(blogData.writer);
     expect(body.blog.writer).toBe(blogData.writer);
@@ -81,6 +84,7 @@ describe("Blog API", () => {
 
     console.log("bbbbbbbbbbbb blog id bbbbbbbbbbbbb", blogId);
   });
+
   //////////////////////////////
   // POST create a blog test failed for unauthorize
   //////////////////////////////
