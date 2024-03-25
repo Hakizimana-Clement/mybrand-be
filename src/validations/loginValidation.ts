@@ -3,8 +3,8 @@ import Joi from "joi";
 
 // step 2. create login schema
 const loginSchema = Joi.object({
-  email: Joi.string().email(),
-  password: Joi.string(),
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
 });
 
 // step 3. create valid function

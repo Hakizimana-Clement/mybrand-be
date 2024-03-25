@@ -17,8 +17,8 @@ const isLoginValid = async (
     );
 
     return res
-      .status(404)
-      .json({ status: "404", message: "Not Found", error: errorMessage });
+      .status(400)
+      .json({ status: "400", message: "Bad request", error: errorMessage });
   }
 
   try {

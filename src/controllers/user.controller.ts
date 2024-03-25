@@ -39,7 +39,8 @@ const loginUser = async (req: Request, res: Response) => {
   try {
     // validation
     if (!email || !req.body.password) {
-      throw Error("All fields must be filled");
+      // throw Error("All fields must be filled");
+      throw Error("Wrong credential");
     }
     // check use email exist
     const user = await User.findOne({ email });
