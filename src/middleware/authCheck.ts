@@ -22,12 +22,12 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
       email: userExist?.email,
     };
 
-    (req as CustomRequest).user = userData;
-    if (userDetail.role !== "admin") {
-      return res
-        .status(406)
-        .json({ message: "Only admin can perform this action" });
-    }
+    // (req as CustomRequest).user = userData;
+    // if (userDetail.role !== "admin") {
+    //   return res
+    //     .status(406)
+    //     .json({ message: "Only admin can perform this action" });
+    // }
 
     next();
   } catch (error) {

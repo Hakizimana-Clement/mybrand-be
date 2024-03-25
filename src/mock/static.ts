@@ -20,8 +20,7 @@
 // };
 
 export const blogData = {
-  title:
-    "bring differ indeed feathers coach purpose largest terrible continued charge buy magic shinning c",
+  title: "largest terrible continued charge buy magic shinning c",
   writer: "testing 2",
   writeImage: "http://ehuhopgu.sn/dedirafan",
   blogImage:
@@ -70,7 +69,6 @@ export const adminLoginData = {
 };
 
 /////////// QUERRY ////////////////
-
 export const querryData = {
   name: "Francisco Simmons",
   email: "Francisco@cupo.pk",
@@ -81,4 +79,12 @@ export const querryData = {
 export const querryDataWithOutMessage = {
   name: "Francisco Simmons",
   email: "Francisco@cupo.pk",
+};
+
+/////////// comment ////////////////
+export const commentDatas = {
+  name: "niyibizi niyibize",
+  email: "bi@ezhoz.sr",
+  comment:
+    "laid off these shaking practical earn information keep per highest machine simple establish dog frozen underline oxygen rabbit volume grass native strong young average",
 };

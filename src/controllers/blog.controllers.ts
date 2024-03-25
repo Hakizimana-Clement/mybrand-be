@@ -125,15 +125,22 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     );
 
     // step 1. Take all data from client but on object
-    const blog = new Blog({
+    // const blog = new Blog({
+    //   title: req.body.title,
+    //   writer: req.body.writer,
+    //   writeImage: req.body.writeImage,
+    //   blogImage: uploadImageToCloudinary.secure_url,
+    //   content: req.body.content,
+    // });
+    // // step 2. save them
+    // await blog.save();
+    const blog = await Blog.create({
       title: req.body.title,
       writer: req.body.writer,
       writeImage: req.body.writeImage,
       blogImage: uploadImageToCloudinary.secure_url,
       content: req.body.content,
     });
-    // step 2. save them
-    await blog.save();
     // step 3. send data
     res
       .status(201)
