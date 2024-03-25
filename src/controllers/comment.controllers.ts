@@ -20,7 +20,7 @@ const createComment = async (req: Request, res: Response) => {
     }
 
     // verify blog id
-    const oneBlog = await BlogModel.findById(id);
+    const oneBlog = await BlogModel.findOne({ _id: id });
     if (!oneBlog) {
       return res.status(404).json({
         status: "404",

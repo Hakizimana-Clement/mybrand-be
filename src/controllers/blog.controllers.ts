@@ -6,7 +6,6 @@ import Blog from "../models/blogModels";
 import mongoose from "mongoose";
 ////////////////////// cloudinary ///////////////////////////////
 import cloudinary from "../utils/cloudinary";
-import uploadImage from "../utils/uploadImage";
 
 ///////////////////////////////////
 // Get all blogs
@@ -57,24 +56,71 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
   }
 };
 
+// if (!req.body.blogImage) {
+//   return res
+//     .status(500)
+//     .json({ message: "Image not found in the request" });
+// }
 //////////////////////////////////
 // Create blog
 //////////////////////////////////
+// const httpCreateBlog = async (req: Request, res: Response) => {
+//   console.log(req.body);
+//   if ("error" in uploadImage) {
+//     return res.status(500).json({
+//       message: "Error uploading image",
+//       error: uploadImage.error,
+//     });
+//   }
+//   const uploadImageToCloudinary = await uploadImage(req.body.blogImage);
+//   if (!uploadImageToCloudinary) return res.status(404).json({ error: "error" });
+//   try {
+//     // step 1. Take all data from client but on object
+//     const blog = new Blog({
+//       title: req.body.title,
+//       writer: req.body.writer,
+//       writeImage: req.body.writeImage,
+//       blogImage: uploadImageToCloudinary.secure_url,
+//       content: req.body.content,
+//     });
+//     // step 2. save them
+//     await blog.save();
+//     // step 3. send data
+//     res
+//       .status(201)
+//       .json({ status: "201", message: "Blog created", blog: blog });
+//   } catch (error: any) {
+//     // console.error("Error creating blog:", error);
+//     // res.status(500).json({ status: "500", message: "Internal Server Error" });
+//     if (error.code === 11000 && error.keyPattern && error.keyValue) {
+//       res.status(400).json({
+//         status: "error",
+//         message: `A blog with the title '${error.keyValue.title}' already exists.`,
+//       });
+//     } else {
+//       // Handle other errors
+//       console.error("Error creating blog:", error);
+//       res
+//         .status(500)
+//         .json({ status: "error", message: "Internal server error" });
+//     }
+//   }
+// };
+
+// newwwwwwwwwwwwww
 const httpCreateBlog = async (req: Request, res: Response) => {
-  console.log(req.body);
+  console.log(req.file);
+  if (!req.file) {
+    console.log(req.file);
+    return res
+      .status(404)
+      .json({ status: "404", message: "Please add blog image  to continue" });
+  }
+  const uploadImageToCloudinary = await cloudinary.uploader.upload(
+    req.file?.path
+  );
+
   try {
-    // if (!req.body.blogImage) {
-    //   return res
-    //     .status(500)
-    //     .json({ message: "Image not found in the request" });
-    // }
-    if ("error" in uploadImage) {
-      return res.status(500).json({
-        message: "Error uploading image",
-        error: uploadImage.error,
-      });
-    }
-    const uploadImageToCloudinary = await uploadImage(req.body.blogImage);
     // step 1. Take all data from client but on object
     const blog = new Blog({
       title: req.body.title,
@@ -89,13 +135,24 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     res
       .status(201)
       .json({ status: "201", message: "Blog created", blog: blog });
-  } catch (error) {
-    console.error("Error creating blog:", error);
-    res.status(500).json({ status: "500", message: "Internal Server Error" });
+  } catch (error: any) {
+    // console.error("Error creating blog:", error);
+    // res.status(500).json({ status: "500", message: "Internal Server Error" });
+    if (error.code === 11000 && error.keyPattern && error.keyValue) {
+      res.status(400).json({
+        status: "error",
+        message: `A blog with the title '${error.keyValue.title}' already exists.`,
+      });
+    } else {
+      // Handle other errors
+      console.error("Error creating blog:", error);
+      res
+        .status(500)
+        .json({ status: "error", message: "Internal server error" });
+    }
   }
 };
 // with multer middleware
-
 // const httpCreateBlog = async (req: Request, res: Response) => {
 //   const fileData = req.file;
 //   console.log("@@@@@@@@@@@@@@@@@@@@@@@", fileData);

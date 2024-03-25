@@ -33,10 +33,10 @@ const httpCreateQuery = async (req: Request, res: Response) => {
       message: "Created querry successfully",
       query: query,
     });
-  } catch (error) {
+  } catch (error: any) {
     res
       .status(400)
-      .json({ status: "400", message: "Bad request", error: error });
+      .json({ status: "400", message: "Bad request", error: error.message });
   }
 };
 

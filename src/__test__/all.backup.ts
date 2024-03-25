@@ -11,6 +11,7 @@ import {
   adminLoginData,
   updateBlogData,
   querryData,
+  querryDataWithOutMessage,
 } from "../mock/static";
 import User from "../models/userModels";
 import Blog from "../models/blogModels";
@@ -20,6 +21,16 @@ jest.setTimeout(30000);
 let token: string;
 let blogId: mongoose.Types.ObjectId;
 let queryId: string;
+
+const blogDataa = {
+  title: "Empty child giant solidg queen pair heavy circus specific...",
+  writer: "testing 2",
+  writeImage: "http://ehuhopgu.sn/dedirafan",
+  blogImage:
+    "https://images.unsplash.com/photo-1605076776194-9b98ba75eb36?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGxvdyUyMGtleSUyMHBvcnRyYWl0fGVufDB8fDB8fHww",
+  content:
+    "noun choose army course something pupil anywhere happily round familiar clothes unhappy roof hungry replace noon refer canal problem ordinary open policeman nervous arrange. spoken saved drove trunk leaving anyone health layers his pony surface plain blow proud pipe political real muscle cabin road married bicycle without century",
+};
 
 // ste 3. test description
 describe("Blog API", () => {
@@ -32,7 +43,7 @@ describe("Blog API", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany();
-    await Blog.deleteMany();
+    // await Blog.deleteMany({});
     await mongoDisconnectToTestingDB();
   });
 
@@ -50,13 +61,14 @@ describe("Blog API", () => {
     //////////////////////////////
     test("It should return signup and login successfully", async () => {
       const response = await request(app)
-        .post("/api/v1/user/signup")
+        .post("/api/v1/users/signup")
         .send(adminSignupData)
         .expect("Content-Type", /json/)
         .expect(201);
 
+      console.log(response.body);
       const responseLogin = await request(app)
-        .post("/api/v1/user/login")
+        .post("/api/v1/users/login")
         .send(adminLoginData)
         .expect(200);
 
@@ -70,17 +82,37 @@ describe("Blog API", () => {
     //////////////////////////////
     // blog POST create a blog  test
     //////////////////////////////
-    test("It should return 201 and new blog created", async () => {
+    // test("It should return 201 and new blog created", async () => {
+    //   const { body } = await request(app)
+    //     .post("/api/v1/blogs")
+    //     .expect("Content-Type", /json/)
+    //     .set("Authorization", `Bearer ${token}`)
+    //     .send(blogData)
+    //     .expect(201);
+
+    //   console.log("********* BLOG DATA **************** ", body.blog);
+    //   expect(body.message).toStrictEqual("Blog created");
+    //   expect(body.blog).toBeDefined();
+    //   blogId = body.blog._id;
+    // });
+
+    // Test case for creating a blog
+    test("Create Blog", async () => {
+      // Send a POST request to the blog creation endpoint
       const { body } = await request(app)
         .post("/api/v1/blogs")
-        .expect("Content-Type", /json/)
         .set("Authorization", `Bearer ${token}`)
         .send(blogData)
         .expect(201);
 
-      console.log("********* BLOG DATA **************** ", body.blog);
-      expect(body.message).toStrictEqual("Blog created");
-      expect(body.blog).toBeDefined();
+      // Expect the body body to contain the created blog data
+      // expect(body.body).toHaveProperty("status", "201");
+      // expect(body.body).toHaveProperty("message", "Blog created");
+      expect(body.blog).toHaveProperty("_id");
+      expect(body.blog.title).toBe(blogData.title);
+      expect(body.blog.writer).toBe(blogData.writer);
+      expect(body.blog.writer).toBe(blogData.writer);
+      expect(body.blog.content).toBe(blogData.content);
       blogId = body.blog._id;
     });
 
@@ -164,6 +196,7 @@ describe("Blog API", () => {
         .delete(`/api/v1/blogs/${blogId}`)
         .set("Authorization", `Bearer ${token}`)
         .expect(204);
+      console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv", blogId);
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -182,8 +215,15 @@ describe("Blog API", () => {
         .expect(201);
 
       expect(body.message).toStrictEqual("Created querry successfully");
-      console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
+      // console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
       queryId = body.query._id;
+    });
+
+    test("It should return 400 for not creating querry", async () => {
+      const { body } = await request(app)
+        .post("/api/v1/querries")
+        .set(querryDataWithOutMessage)
+        .expect(400);
     });
 
     //////////////////////////////
@@ -199,6 +239,7 @@ describe("Blog API", () => {
       expect(body.message).toStrictEqual("success");
       expect(body.querries).toBeDefined();
     });
+
     //////////////////////////////
     // DELETE single querry
     //////////////////////////////
@@ -223,16 +264,96 @@ describe("Blog API", () => {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     // CREATE LIKE
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    test("It should return 404 for blog id not found for creating like on single post", async () => {
+      const { body } = await request(app)
+        .post(`/api/v1/blogs/${blogId}/likes`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect("Content-Type", /json/)
+        .expect(404);
+      expect(body.message).toStrictEqual("Blog Not found");
+    });
     // test("It should return 201 for create like on single post", async () => {
-    //   console.log("lllllllllllllllllllllllll", blogId);
-    //   const { body } = await request(app)
+    //   console.log("lllllllllllllikellllllllllll", blogId);
+    //   // Send a POST request to create a like
+    //   const response = await request(app)
     //     .post(`/api/v1/blogs/${blogId}/likes`)
-    //     // .post(`/api/v1/blogs/65fafb06a33612e96af6ce96/likes`)
     //     .set("Authorization", `Bearer ${token}`)
-    //     .expect("Content-Type", /json/);
-    //   expect(body.message).toStrictEqual("Created");
+    //     .expect("Content-Type", /json/)
+    //     .expect(201);
+
+    //   // Verify the response body
+    //   expect(response.body.message).toBe("Created");
     // });
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Read all LIKE
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // test("It should return 200 and list all querries", async () => {
+    //   console.log(
+    //     "kkkkkkkkkkkkkkkkkkkkk all querries kkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+    //     blogId
+    //   );
+
+    //   const { body } = await request(app)
+    //     .get(`/api/v1/blogs/${blogId}/likes`)
+    //     .set("Authorization", `Bearer ${token}`)
+    //     .expect("Content-Type", /json/)
+    //     .expect(200);
+
+    //   expect(body.message).toStrictEqual("success");
+    // });
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // COMMENT
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    describe("POST /api/v1/blogs/:id/comments", () => {
+      test("It should successfully create a comment on a blog post", async () => {
+        const response = await request(app)
+          .post(`/api/v1/blogs/${blogId}/comments`)
+          .set("Authorization", `Bearer ${token}`)
+          .send({
+            name: "John Doe",
+            email: "john@example.com",
+            comment: "This is a test comment",
+          })
+          .expect(201);
+
+        expect(response.body.message).toBe("Created");
+        // expect(response.body.comments).toBeDefined(); // Verify comment data
+      });
+
+      test("It should return 404 for an invalid blog ID", async () => {
+        const response = await request(app)
+          .post(`/api/v1/blogs/invalidID/comments`)
+          .send({
+            name: "John Doe",
+            email: "john@example.com",
+            comment: "This is a test comment",
+          });
+
+        expect(response.statusCode).toBe(404);
+        expect(response.body.status).toBe("404");
+        expect(response.body.message).toBe("Not found");
+        expect(response.body.error).toBe("Blog Not Found");
+      });
+
+      test("It should return 404 if the blog does not exist", async () => {
+        const nonExistentBlogId = "606c692a3507c09e34388f87"; // Assuming this ID does not exist
+        const response = await request(app)
+          .post(`/api/v1/blogs/${nonExistentBlogId}/comments`)
+          .send({
+            name: "John Doe",
+            email: "john@example.com",
+            comment: "This is a test comment",
+          });
+
+        expect(response.statusCode).toBe(404);
+        expect(response.body.status).toBe("404");
+        expect(response.body.message).toBe("Not found");
+        expect(response.body.error).toBe("Blog Not Found");
+      });
+    });
   });
 });
-
-// export default token;

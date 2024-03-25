@@ -32,14 +32,22 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     console.log(error);
-    return res.status(401).json({ message: "No valid credential" });
+    return res.status(401).json({
+      status: "401",
+      message: "Please login",
+    });
   }
 };
+// message: "Unauthorized",
+// error: "No valid credential",
 
 const isLogin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.header("Authorization"))
-      return res.status(401).json({ message: "please login" });
+      return res.status(401).json({
+        status: "401",
+        message: "Please login",
+      });
 
     interface CustomRequest extends Request {
       user?: IUserRequest;
@@ -59,7 +67,11 @@ const isLogin = async (req: Request, res: Response, next: NextFunction) => {
     next();
   } catch (error) {
     console.log(error);
-    return res.status(401).json({ message: "No valid credential" });
+    return res.status(401).json({
+      status: "401",
+      message: "Unauthorized",
+      error: "No valid credential",
+    });
   }
 };
 

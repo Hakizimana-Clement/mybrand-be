@@ -28,7 +28,8 @@ import isCommentValid from "../middleware/commentMiddleware";
 // import { isAdminNow, isLoggedInNow } from "../middleware/authenticationMiddleware";
 import { isAdmin, isLogin } from "../middleware/authCheck";
 // middleware
-import upload from "../middleware/multerMiddleware";
+import uploadImageMiddleware from "../middleware/multerMiddleware";
+// import uploadImage from "../utils/uploadImage";
 
 ////////////////////////////// BLOGS ROUTES /////////////////////////////////////
 
@@ -132,7 +133,9 @@ blogRouter
    *               updatedAt: "2023-04-03T00:25:32.189Z"
    *               __v: 0
    */
-  .post("/", isAdmin, isValid, httpCreateBlog)
+  // .post("/", isAdmin, isValid, httpCreateBlog)
+  // .post("/", isValid, httpCreateBlog)
+  .post("/", isAdmin, uploadImageMiddleware.single("blogImage"), httpCreateBlog)
   // .post("/", isAdmin, isValid, upload.single("blogImage"), httpCreateBlog)
   // .post("/", isAdmin, upload.single("blogImage"), httpCreateBlog)
   // .post("/", isAdmin, httpCreateBlog)
@@ -151,20 +154,20 @@ blogRouter
 
   ////////////////////////////// COMMENT ROUTES /////////////////////////////////////
   // get all comment
-  .get("/:id/comments", isLogin, isAdmin, getAllComments)
+  .get("/:id/comments", isAdmin, getAllComments)
 
   // Create comment
-  .post("/:id/comments", isLogin, isAdmin, isCommentValid, createComment)
+  .post("/:id/comments", isAdmin, isCommentValid, createComment)
 
   ////////////////////////////// LIKE ROUTES /////////////////////////////////////
 
   // get all likes
-  // .get("/:id/likes", isLogin, isAdmin, getAllLikes)
-  .get("/:id/likes", isAdmin, getAllLikes)
+  .get("/:id/likes", isLogin, isAdmin, getAllLikes)
+  // .get("/:id/likes", isAdmin, getAllLikes)
   // .get("/:id/likes", getAllLikes)
   // create like
-  // .post("/:id/likes", isLogin, isAdmin, createLike);
-  .post("/:id/likes", isAdmin, createLike);
+  .post("/:id/likes", isLogin, isAdmin, createLike);
+// .post("/:id/likes", isAdmin, createLike);
 
 // export all routers
 export default blogRouter;

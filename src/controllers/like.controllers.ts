@@ -41,13 +41,13 @@ const getAllLikes = async (req: Request, res: Response) => {
 const createLike = async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  console.log("&&&&&&&&&&&&&&&&&", id);
+  // console.log("&&&&&&&&&&&&&&&&&", id);
   try {
     // step 1. checking is blog with that id exist
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({
         status: "404",
-        message: "Not found",
+        message: "id Not found",
         error: "Blog Not Found",
       });
     }

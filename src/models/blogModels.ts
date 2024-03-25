@@ -44,7 +44,8 @@ const Schema = mongoose.Schema;
 // title: { type: String, required: true },
 const blogSchema = new Schema(
   {
-    title: { type: String, required: true, unique: true },
+    // title: { type: String, required: true, unique: true },
+    title: { type: String, required: true },
     writer: { type: String, required: true },
     writeImage: { type: String },
     blogImage: { type: String, required: true },

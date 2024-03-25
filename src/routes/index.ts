@@ -13,6 +13,6 @@ import swaggerDocs from "../utils/swagger";
 //  Endpoints
 apiRoutes.use("/blogs", blogRouter);
 apiRoutes.use("/querries", querriesRouter);
-apiRoutes.use("/user", authRouter);
+apiRoutes.use("/users", authRouter);
 
 export default apiRoutes;
