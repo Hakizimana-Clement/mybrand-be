@@ -35,7 +35,7 @@ describe("Blog API", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany({});
-    // await Blog.deleteMany({});
+    await Blog.deleteMany({});
     await mongoDisconnectToTestingDB();
   });
 
@@ -66,8 +66,6 @@ describe("Blog API", () => {
 
   // // Test case for creating a blog
   test("It should return 201 and Create new blog", async () => {
-    // const imagePath = path.join(__dirname, "test-image.jpg");
-    // const imageBuffer = fs.readFileSync(imagePath);
     // Send a POST request to the blog creation endpoint
     const { body } = await request(app)
       .post("/api/v1/blogs")
