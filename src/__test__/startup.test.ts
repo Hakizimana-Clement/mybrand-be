@@ -66,13 +66,13 @@ describe("Blog API", () => {
 
   // // Test case for creating a blog
   test("It should return 201 and Create new blog", async () => {
-    const imagePath = path.join(__dirname, "test-image.jpg");
-    const imageBuffer = fs.readFileSync(imagePath);
+    // const imagePath = path.join(__dirname, "test-image.jpg");
+    // const imageBuffer = fs.readFileSync(imagePath);
     // Send a POST request to the blog creation endpoint
     const { body } = await request(app)
       .post("/api/v1/blogs")
       .set("Authorization", `Bearer ${token}`)
-      .attach("blogImage", imageBuffer, { filename: "image.jpg" })
+      .attach("blogImage", blogData.blogImage)
       .field("title", blogData.title)
       .field("writer", blogData.writer)
       .field("content", blogData.content)

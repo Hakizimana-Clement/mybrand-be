@@ -18,13 +18,13 @@
 //   blogImage: `data:image/jpeg;base64,${base64Image}`,
 //   content: "noun choose army course something pupil anywhere happily round familiar clothes unhappy roof hungry replace noon refer canal problem ordinary open policeman nervous arrange. spoken saved drove trunk leaving anyone health layers his pony surface plain blow proud pipe political real muscle cabin road married bicycle without century",
 // };
-
+import path from "path";
+const imagePath = path.resolve(__dirname, "image.jpg");
 export const blogData = {
-  title: "largest terrible continued charge buy magic shinning c",
+  title: "terrible continued charge buy magic shinning c",
   writer: "testing 2",
   writeImage: "http://ehuhopgu.sn/dedirafan",
-  blogImage:
-    "https://images.unsplash.com/photo-1605076776194-9b98ba75eb36?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGxvdyUyMGtleSUyMHBvcnRyYWl0fGVufDB8fDB8fHww",
+  blogImage: imagePath,
   content:
     "noun choose army course something pupil anywhere happily round familiar clothes unhappy roof hungry replace noon refer canal problem ordinary open policeman nervous arrange. spoken saved drove trunk leaving anyone health layers his pony surface plain blow proud pipe political real muscle cabin road married bicycle without century",
 };
@@ -37,11 +37,10 @@ export const blogData = {
 
 export const updateBlogData = {
   title: "empty child giant solid queen pair heavy circus specific...",
+  blogImage: imagePath,
   content:
     "duck bark different alike thou strange whispered radio organization recognize apart drop coast stream fallen composed cup hard letter basis bring interior air according",
 };
-
-export const singleBlogId = "65f994ddcf2f3d3c79784bb1";
 
 /////////// SINGUP ////////////////
 export const userSignupData = {
