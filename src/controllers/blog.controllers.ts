@@ -63,34 +63,43 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     "ffffffffffffffffff file image fffffffffffffffffffffffffffff",
     req.file
   );
+  if (!req.file) {
+    console.log(req.file);
+    return res
+      .status(404)
+      .json({ status: "404", message: "Please add blog image  to continue" });
+  }
+
+  console.log(
+    "ffffffffffffffffff file image fffffffffffffffffffffffffffff",
+    req.file
+  );
   try {
-    if (!req.file) {
-      console.log(req.file);
-      return res
-        .status(404)
-        .json({ status: "404", message: "Please add blog image  to continue" });
-    }
     const uploadImageToCloudinary = await cloudinary.uploader.upload(
       req.file?.path
     );
 
+    console.log(
+      "ffffffffffffffffff image upload fffffffffffffffffffffffffffff",
+      uploadImageToCloudinary
+    );
     // step 1. Take all data from client but on object
-    // const blog = new Blog({
-    //   title: req.body.title,
-    //   writer: req.body.writer,
-    //   writeImage: req.body.writeImage,
-    //   blogImage: uploadImageToCloudinary.secure_url,
-    //   content: req.body.content,
-    // });
-    // // step 2. save them
-    // await blog.save();
-    const blog = await Blog.create({
+    const blog = new Blog({
       title: req.body.title,
       writer: req.body.writer,
       writeImage: req.body.writeImage,
       blogImage: uploadImageToCloudinary.secure_url,
       content: req.body.content,
     });
+    // step 2. save them
+    await blog.save();
+    // const blog = await Blog.create({
+    //   title: req.body.title,
+    //   writer: req.body.writer,
+    //   writeImage: req.body.writeImage,
+    //   blogImage: uploadImageToCloudinary.secure_url,
+    //   content: req.body.content,
+    // });
     // step 3. send data
     res
       .status(201)
