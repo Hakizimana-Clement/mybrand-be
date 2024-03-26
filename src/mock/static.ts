@@ -1,7 +1,9 @@
 import path from "path";
 const imagePath = path.resolve(__dirname, "image.jpg");
+
 export const blogData = {
-  title: "terrible continued charge buy magic shinning c",
+  title:
+    "balloon swim corner horn tiny stream by realize sent soft desert selection village needed morning thick eat line twice music am somewhere nor feel",
   writer: "testing 2",
   writeImage: "http://ehuhopgu.sn/dedirafan",
   blogImage: imagePath,
