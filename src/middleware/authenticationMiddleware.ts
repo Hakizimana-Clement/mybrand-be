@@ -39,14 +39,14 @@ const isAdminNow = async (
     req.UserId = userData;
     if (userDetail.role !== "admin") {
       return res
-        .status(406)
-        .json({ message: "Only admin can perform this action" });
+        .status(403)
+        .json({ status: "403", message: "Only admin can perform this action" });
     }
 
     next();
   } catch (error) {
     console.error("Error: " + error);
-    return res.status(401).json({ message: "No valid credential" });
+    return res.status(401).json({ message: "Wrong credential" });
   }
 };
 

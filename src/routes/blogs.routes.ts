@@ -481,48 +481,41 @@ blogRouter
   // .get("/:id/likes", getAllLikes)
 
   // Create a like for a specific blog
+
   /**
    * @swagger
-   * /api/v1/blogs/{id}/likes:
+   * /api/v1/blogs/{blogId}/likes:
    *   post:
-   *     summary: Create a like for a specific blog
-   *     description: Create a like for a specific blog by providing the blog ID.
+   *     summary: Create a like for a blog post
    *     tags: [Likes]
    *     parameters:
    *       - in: path
-   *         name: id
+   *         name: blogId
+   *         required: true
+   *         description: ID of the blog post
    *         schema:
    *           type: string
-   *         required: true
-   *         description: ID of the blog to create a like for
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '##/components/schemas/Like'
    *     responses:
-   *       '201':
+   *       201:
    *         description: Like created successfully
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 status:
-   *                   type: string
-   *                 message:
-   *                   type: string
-   *       '400':
+   *
+   *       401:
+   *         description: Unauthorized
+   *       400:
    *         description: Bad request
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 status:
-   *                   type: string
-   *                 error:
-   *                   type: string
+   *     security:
+   *       - bearerAuth: []
    */
 
   // create like
-  // .post("/:id/likes", isLogin, isAdmin, createLike);
-  .post("/:id/likes", createLike);
+  .post("/:id/likes", isLogin, isAdmin, createLike);
+// .post("/:id/likes", createLike);
 // .post("/:id/likes", isAdmin, createLike);
 
 export default blogRouter;
