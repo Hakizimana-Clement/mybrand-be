@@ -9,9 +9,15 @@ jobs:
       - run:
           name: Install dependencies
           command: npm install
+
       - run:
           name: Run tests
+          command: npm run test
+
+      - run:
+          name: Run coverage
           command: npm run test:ci
+
       - run:
           name: create badge
           command: npx update-badge 
