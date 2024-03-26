@@ -25,7 +25,7 @@ jobs:
           command: npm run test:ci
       - run:
           name: Upload coverage to Coveralls
-          command: npx coveralls < coverage/lcov.info
+          command: ./upload-coveralls.sh
 
 workflows:
   version: 2
