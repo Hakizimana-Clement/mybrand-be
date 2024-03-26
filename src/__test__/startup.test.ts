@@ -270,7 +270,7 @@ describe("Blog API", () => {
     //   const { body } = await request(app)
     //     .delete(`/api/v1/queries/${queryId}`)
     //     .set("Authorization", `Bearer ${token}`)
-    //     .expect(204);
+    //     .expect(200);
     // });
 
     // DELETE ERROR NOT QUERY FOUND single querry

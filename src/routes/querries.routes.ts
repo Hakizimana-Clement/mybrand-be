@@ -20,10 +20,12 @@ querriesRouter
    *     responses:
    *       '200':
    *         description: A list of queries
+   *     security:
+   *     - bearerAuth: []
    */
 
-  // .get("/", isAdmin, httpGetAllQuerries)
-  .get("/", httpGetAllQuerries)
+  .get("/", isAdmin, httpGetAllQuerries)
+  // .get("/", httpGetAllQuerries)
 
   /**
    * @swagger
@@ -47,16 +49,14 @@ querriesRouter
    *               message:
    *                 type: string
    *             example:
-   *               name: iraturokoye
-   *               email: iraturokoye@email.com
-   *               message: I have project idea to work on
+   *               name: iradukunda
+   *               email: iradukunda@email.com
+   *               message: I have project idea
    *     responses:
    *       '201':
    *         description: Queries created successfully
    *       '400':
    *         description: Bad request
-   *       '401':
-   *         description: Unauthorized, authentication token is missing or invalid
    *       '500':
    *         description: Internal server error
    */
@@ -78,16 +78,18 @@ querriesRouter
    *         schema:
    *           type: string
    *     responses:
-   *       '204':
+   *       '200':
    *         description: Query deleted successfully
    *       '401':
-   *         description: Unauthorized, authentication token is missing or invalid
+   *         description: Unauthorized, authentication token is missing
    *       '404':
    *         description: Query not found
+   *     security:
+   *     - bearerAuth: []
    */
 
   // delete queries
-  // .delete("/:id", isAdmin, httpDeleteQuery);
-  .delete("/:id", httpDeleteQuery);
+  .delete("/:id", isAdmin, httpDeleteQuery);
+// .delete("/:id", httpDeleteQuery);
 
 export default querriesRouter;

@@ -55,7 +55,7 @@ const httpDeleteQuery = async (req: Request, res: Response) => {
         error: "Query Not Found",
       });
 
-    res.status(204).json({ status: "204", message: "delete successfully" });
+    res.status(200).json({ status: "200", message: "delete successfully" });
   } catch (error) {
     res.status(404).json({
       status: "404",

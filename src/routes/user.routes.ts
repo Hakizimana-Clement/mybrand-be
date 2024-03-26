@@ -3,7 +3,6 @@
 // // import user controller
 // import { loginUser, signupUser } from "../controllers/user.controller";
 // import isSignupValid from "../middleware/signupMiddleware";
-import isLoginValid from "../middleware/loginMiddleware";
 
 // authRouter
 //   // login
@@ -27,6 +26,7 @@ import isLoginValid from "../middleware/loginMiddleware";
 //   .post("/signup", isSignupValid, signupUser);
 
 // export default authRouter;
+import isLoginValid from "../middleware/loginMiddleware";
 import express from "express";
 const authRouter = express.Router();
 
@@ -46,7 +46,7 @@ import isSignupValid from "../middleware/signupMiddleware";
  * /api/v1/users/signup:
  *   post:
  *     summary: Register a new user
- *     tags: [User]
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
@@ -66,9 +66,11 @@ import isSignupValid from "../middleware/signupMiddleware";
  *               password: 123John!
  *     responses:
  *       201:
- *         description: User registered successfully
+ *         description: User signup successfully
+ *       400:
+ *         description: Bad request
  *       409:
- *         description: Email already in use or other conflict
+ *         description: Email already in use
  */
 authRouter.post("/signup", isSignupValid, signupUser);
 /**
@@ -76,7 +78,7 @@ authRouter.post("/signup", isSignupValid, signupUser);
  * /api/v1/users/login:
  *   post:
  *     summary: Authenticate user and generate access token
- *     tags: [User]
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:

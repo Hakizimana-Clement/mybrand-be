@@ -63,26 +63,27 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     "ffffffffffffffffff file image fffffffffffffffffffffffffffff",
     req.file
   );
-  if (!req.file) {
-    console.log(req.file);
-    return res
-      .status(404)
-      .json({ status: "404", message: "Please add blog image  to continue" });
-  }
-
-  console.log(
-    "ffffffffffffffffff file image fffffffffffffffffffffffffffff",
-    req.file
-  );
   try {
+    if (!req.file) {
+      console.log(req.file);
+      return res
+        .status(404)
+        .json({ status: "404", message: "blog image is required" });
+      // .json({ status: "404", message: "Please add blog image  to continue" });
+    }
+
+    // console.log(
+    //   "ffffffffffffffffff file image fffffffffffffffffffffffffffff",
+    //   req.file
+    // );
     const uploadImageToCloudinary = await cloudinary.uploader.upload(
       req.file?.path
     );
 
-    console.log(
-      "ffffffffffffffffff image upload fffffffffffffffffffffffffffff",
-      uploadImageToCloudinary
-    );
+    // console.log(
+    //   "ffffffffffffffffff image upload fffffffffffffffffffffffffffff",
+    //   uploadImageToCloudinary
+    // );
     // step 1. Take all data from client but on object
     const blog = new Blog({
       title: req.body.title,
@@ -129,15 +130,14 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
   // step 1. Get id from client
   const { id } = req.params;
   // check if data is empty before saving to database
-  // const allData = req.body;
-  // if (Object.keys(allData).length === 0) {
-  //   return res.status(400).json({
-  //     status: "400",
-  //     message: "Bad request",
-  //     error:
-  //       "Incomplete Fields: Please fill in all the required fields to update the blog",
-  //   });
-  // }
+  const allData = req.body;
+  if (Object.keys(allData).length === 0) {
+    return res.status(400).json({
+      status: "400",
+      message: "Bad request",
+      error: "Field is not allowed to be empty",
+    });
+  }
   try {
     const blog = await Blog.findOneAndUpdate(
       { _id: id },
@@ -181,7 +181,9 @@ const httpDeleteBlog = async (req: Request, res: Response) => {
     // step 1. find be id and delete
     await Blog.deleteOne({ _id: id });
     //  step 2. send not content code status and then send empty object
-    res.status(200).json({ status: "200", message: "delete successfully" });
+    res
+      .status(200)
+      .json({ status: "200", message: "delete blog successfully" });
   } catch (error) {
     res.status(404).json({
       status: "404",

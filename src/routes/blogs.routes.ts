@@ -203,17 +203,15 @@ blogRouter
   .get("/", httpGetAllBlogs)
 
   /**
-   * @swagger
+   * @openapi
    * /api/v1/blogs:
    *   post:
    *     summary: Create a new blog
    *     tags: [Blogs]
-   *     security:
-   *       - bearerAuth: []
    *     requestBody:
    *       required: true
    *       content:
-   *         application/json:
+   *         multipart/form-data:
    *           schema:
    *             type: object
    *             properties:
@@ -223,25 +221,27 @@ blogRouter
    *                 type: string
    *               blogImage:
    *                 type: string
+   *                 format: binary
    *               content:
    *                 type: string
-   *             example:
-   *               title: The Enchanting Journey to the Whispering Wood
-   *               writer: Lily Evergreen
-   *               blogImage: https://res.cloudinary.com/dtimmf97z/image/upload/v1711404157/uoyj6ycojj3utewmsepd.jpg
-   *               content: Introduction The sun dipped below the horizon, casting a warm glow over the ancient trees. The Whispering Woods, shrouded in mystery, beckoned to those who dared to venture beyond the well-trodden path. I, too, succumbed to its allure, my heart pounding with anticipation.
    *     responses:
    *       '201':
    *         description: Blog created successfully
+   *       401:
+   *         description: Unauthorized, wrong credentials
+   *       '404':
+   *         description: Not found
    *       '400':
-   *         description: Bad request, missing or invalid parameters
-   *       '401':
-   *         description: Unauthorized, authentication token is missing or invalid
-   *       '500':
-   *         description: Internal server error
+   *         description: Bad request
    */
 
-  .post("/", isAdmin, uploadImageMiddleware.single("blogImage"), httpCreateBlog)
+  .post(
+    "/",
+    isAdmin,
+    uploadImageMiddleware.single("blogImage"),
+    isValid,
+    httpCreateBlog
+  )
   // .post("/", uploadImageMiddleware.single("blogImage"), httpCreateBlog)
   /**
    * @swagger
@@ -297,8 +297,12 @@ blogRouter
    *     responses:
    *       '200':
    *         description: Blog updated successfully
+   *       '400':
+   *         description: Bad request
    *       '404':
    *         description: Blog not found
+   *     security:
+   *       - bearerAuth: []
    */
   .patch("/:id", isAdmin, httpUpdateBlog)
   // .patch("/:id", httpUpdateBlog)
@@ -321,6 +325,8 @@ blogRouter
    *         description: Blog deleted successfully
    *       '404':
    *         description: Blog not found
+   *     security:
+   *       - bearerAuth: []
    */
   .delete("/:id", isAdmin, httpDeleteBlog)
   // .delete("/:id", httpDeleteBlog)
@@ -349,27 +355,12 @@ blogRouter
    *     responses:
    *       '200':
    *         description: A list of comments for the specified blog post
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 status:
-   *                   type: string
-   *                   example: "200"
-   *                 message:
-   *                   type: string
-   *                   example: "Success"
-   *                 comments:
-   *                   type: array
-   *                   items:
-   *                     $ref: '#/components/schemas/Comment'
+   *       '401':
+   *         description: Unauthorized, authentication token is missing
    *       '404':
-   *         description: Blog post not found or no comments found
-   *         content:
-   *           application/json:
-   *             schema:
-  //  *               $ref: '#/components/schemas/Error'
+   *         description: Blog post not found
+   *     security:
+   *       - bearerAuth: []
    */
 
   // get all comment
@@ -413,19 +404,13 @@ blogRouter
    *                   $ref: '##/components/schemas/Comment'
    *       '400':
    *         description: Bad request or validation error
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '##/components/schemas/Error'
    *
    *       '401':
    *         description: Unauthorized, authentication token is missing
    *       '404':
    *         description: Blog post not found
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '##/components/schemas/Error'
+   *     security:
+   *       - bearerAuth: []
    */
   // Create comment
   .post("/:id/comments", isAdmin, isCommentValid, createComment)
@@ -474,6 +459,8 @@ blogRouter
    *                   type: string
    *                 error:
    *                   type: string
+   *     security:
+   *       - bearerAuth: []
    */
   // get all likes
   .get("/:id/likes", isLogin, isAdmin, getAllLikes)

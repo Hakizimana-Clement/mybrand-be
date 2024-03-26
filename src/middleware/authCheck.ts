@@ -6,7 +6,10 @@ import UserModel from "../models/userModels";
 const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.header("Authorization"))
-      return res.status(401).json({ message: "please login" });
+      return res.status(401).json({
+        status: "401",
+        message: "please login",
+      });
 
     interface CustomRequest extends Request {
       user?: IUserRequest;
@@ -22,6 +25,7 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
       email: userExist?.email,
     };
 
+    // unable admin role checking
     // (req as CustomRequest).user = userData;
     // if (userDetail.role !== "admin") {
     //   return res
@@ -70,7 +74,7 @@ const isLogin = async (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({
       status: "401",
       message: "Unauthorized",
-      error: "No valid credential",
+      error: "wrong credential",
     });
   }
 };
