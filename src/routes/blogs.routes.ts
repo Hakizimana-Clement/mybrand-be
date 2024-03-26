@@ -180,6 +180,7 @@ import {
   httpUpdateBlog,
   httpDeleteBlog,
 } from "../controllers/blog.controllers";
+import { isValid } from "../middleware/blogMiddleware";
 
 blogRouter
   /**
@@ -212,7 +213,7 @@ blogRouter
    *     requestBody:
    *       required: true
    *       content:
-   *         multipart/form-data:
+   *         application/json:
    *           schema:
    *             type: object
    *             properties:

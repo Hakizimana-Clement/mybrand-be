@@ -12,6 +12,9 @@ jobs:
       - run:
           name: Run tests
           command: npm run test:ci
+      - run:
+          name: create badge
+          command: npx update-badge 
 
 workflows:
   version: 2

@@ -1,3 +1,1 @@
-[![Coverage Status] (https://img.shields.io/badge/coverage-63.79%25-brightgreen)]
-
-# BACKEND DOCUMENTAION
+ ![check-code-coverage](https://img.shields.io/badge/code--coverage-73.02%25-yellow)
