@@ -11,8 +11,8 @@ import swaggerDocs from "../utils/swagger";
 // apiRoutes.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // apiRoutes.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 //  Endpoints
-apiRoutes.use("/blogs", blogRouter);
-apiRoutes.use("/querries", querriesRouter);
 apiRoutes.use("/users", authRouter);
+apiRoutes.use("/blogs", blogRouter);
+apiRoutes.use("/queries", querriesRouter);
 
 export default apiRoutes;
