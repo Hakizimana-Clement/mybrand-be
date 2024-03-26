@@ -11,9 +11,9 @@
 //   httpDeleteBlog,
 // } from "../controllers/blog.controllers";
 
-// // import like
-// import { getAllLikes, createLike } from "../controllers/like.controllers";
-// // import comment
+// import like
+import { getAllLikes, createLike } from "../controllers/like.controllers";
+// import comment
 import {
   createComment,
   getAllComments,
@@ -428,6 +428,101 @@ blogRouter
    */
   // Create comment
   // .post("/:id/comments", isAdmin, isCommentValid, createComment);
-  .post("/:id/comments", isCommentValid, createComment);
+  .post("/:id/comments", isCommentValid, createComment)
+
+  //   ////////////////////////////// LIKE ROUTES /////////////////////////////////////
+  // Get all likes for a specific blog
+  /**
+   * @swagger
+   * /api/v1/blogs/{id}/likes:
+   *   get:
+   *     summary: Get all likes for a specific blog
+   *     description: Retrieve all likes associated with a specific blog.
+   *     tags: [Likes]
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: ID of the blog to get likes for
+   *     responses:
+   *       '200':
+   *         description: A list of likes for the specified blog
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                 message:
+   *                   type: string
+   *                 likes:
+   *                   type: array
+   *                   items:
+   *                     $ref: '##/components/schemas/Like'
+   *       '404':
+   *         description: Blog not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                 error:
+   *                   type: string
+   */
+  // get all likes
+  // .get("/:id/likes", isLogin, isAdmin, getAllLikes)
+  .get("/:id/likes", getAllLikes)
+  // .get("/:id/likes", isAdmin, getAllLikes)
+  // .get("/:id/likes", getAllLikes)
+
+  // Create a like for a specific blog
+  /**
+   * @swagger
+   * /api/v1/blogs/{id}/likes:
+   *   post:
+   *     summary: Create a like for a specific blog
+   *     description: Create a like for a specific blog by providing the blog ID.
+   *     tags: [Likes]
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: ID of the blog to create a like for
+   *     responses:
+   *       '201':
+   *         description: Like created successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                 message:
+   *                   type: string
+   *       '400':
+   *         description: Bad request
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                 error:
+   *                   type: string
+   */
+
+  // create like
+  // .post("/:id/likes", isLogin, isAdmin, createLike);
+  .post("/:id/likes", createLike);
+// .post("/:id/likes", isAdmin, createLike);
 
 export default blogRouter;

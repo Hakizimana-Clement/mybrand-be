@@ -7,7 +7,7 @@ const options: swaggerJSDoc.Options = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "REST API Documentation",
+      title: "REST API Documentation (My brand Backend)",
       version,
       description:
         "This backend endpoint project which have  blogs,queries,likes and comments endpoint",

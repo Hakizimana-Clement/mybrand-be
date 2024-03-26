@@ -37,7 +37,7 @@ import isSignupValid from "../middleware/signupMiddleware";
 /**
  * @openapi
  * tags:
- *   name: User
+ *   name: Users
  *   description: Operations related to user authentication
  */
 
