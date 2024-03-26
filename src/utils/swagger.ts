@@ -35,7 +35,7 @@ const options: swaggerJSDoc.Options = {
         description: "Local development server",
       },
       {
-        url: "https://mybrand-be-j4ci.onrender.com/api/v1",
+        url: "https://mybrand-be-j4ci.onrender.com",
         description: "Production server",
       },
     ],

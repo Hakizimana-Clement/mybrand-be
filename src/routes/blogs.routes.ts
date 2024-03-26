@@ -212,7 +212,7 @@ blogRouter
    *     requestBody:
    *       required: true
    *       content:
-   *         application/json:
+   *         multipart/form-data:
    *           schema:
    *             type: object
    *             properties:
@@ -240,8 +240,8 @@ blogRouter
    *         description: Internal server error
    */
 
-  // .post("/", isAdmin, uploadImageMiddleware.single("blogImage"), httpCreateBlog)
-  .post("/", uploadImageMiddleware.single("blogImage"), httpCreateBlog)
+  .post("/", isAdmin, uploadImageMiddleware.single("blogImage"), httpCreateBlog)
+  // .post("/", uploadImageMiddleware.single("blogImage"), httpCreateBlog)
   /**
    * @swagger
    * /api/v1/blogs/{id}:
@@ -299,8 +299,8 @@ blogRouter
    *       '404':
    *         description: Blog not found
    */
-  // .patch("/:id", isAdmin, httpUpdateBlog)
-  .patch("/:id", httpUpdateBlog)
+  .patch("/:id", isAdmin, httpUpdateBlog)
+  // .patch("/:id", httpUpdateBlog)
 
   /**
    * @swagger
@@ -316,13 +316,13 @@ blogRouter
    *         schema:
    *           type: string
    *     responses:
-   *       '204':
+   *       '200':
    *         description: Blog deleted successfully
    *       '404':
    *         description: Blog not found
    */
-  // .delete("/:id", isAdmin, httpDeleteBlog);
-  .delete("/:id", httpDeleteBlog)
+  .delete("/:id", isAdmin, httpDeleteBlog)
+  // .delete("/:id", httpDeleteBlog)
 
   ////////////////////////////// COMMENT ROUTES /////////////////////////////////////
   /**
@@ -372,8 +372,8 @@ blogRouter
    */
 
   // get all comment
-  // .get("/:id/comments", isAdmin, getAllComments)
-  .get("/:id/comments", getAllComments)
+  .get("/:id/comments", isAdmin, getAllComments)
+  // .get("/:id/comments", getAllComments)
 
   /**
    * @swagger
@@ -427,8 +427,8 @@ blogRouter
    *               $ref: '##/components/schemas/Error'
    */
   // Create comment
-  // .post("/:id/comments", isAdmin, isCommentValid, createComment);
-  .post("/:id/comments", isCommentValid, createComment)
+  .post("/:id/comments", isAdmin, isCommentValid, createComment)
+  // .post("/:id/comments", isCommentValid, createComment)
 
   //   ////////////////////////////// LIKE ROUTES /////////////////////////////////////
   // Get all likes for a specific blog
@@ -475,8 +475,8 @@ blogRouter
    *                   type: string
    */
   // get all likes
-  // .get("/:id/likes", isLogin, isAdmin, getAllLikes)
-  .get("/:id/likes", getAllLikes)
+  .get("/:id/likes", isLogin, isAdmin, getAllLikes)
+  // .get("/:id/likes", getAllLikes)
   // .get("/:id/likes", isAdmin, getAllLikes)
   // .get("/:id/likes", getAllLikes)
 

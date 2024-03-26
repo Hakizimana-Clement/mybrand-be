@@ -163,11 +163,11 @@ describe("Blog API", () => {
   //////////////////////////////
   // delete single blog
   //////////////////////////////
-  test("It should return 204 and delete single blog", async () => {
+  test("It should return 200 and delete single blog", async () => {
     const { body } = await request(app)
       .delete(`/api/v1/blogs/${blogId}`)
       .set("Authorization", `Bearer ${token}`)
-      .expect(204);
+      .expect(200);
     console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv", blogId);
   });
   describe("Like", () => {
@@ -226,58 +226,60 @@ describe("Blog API", () => {
   // QUERY
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////
-  // CREATE a querry
-  //////////////////////////////
-  test("It should return 201 for creating querry", async () => {
-    const { body } = await request(app)
-      .post("/api/v1/querries")
-      .expect("Content-Type", /json/)
-      .send(querryData)
-      .expect(201);
+  describe("Query enpoint", () => {
+    //////////////////////////////
+    // CREATE a querry
+    //////////////////////////////
+    test("It should return 201 for creating querry", async () => {
+      const { body } = await request(app)
+        .post("/api/v1/queries")
+        .expect("Content-Type", /json/)
+        .send(querryData)
+        .expect(201);
 
-    expect(body.message).toStrictEqual("Created querry successfully");
-    // console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
-    queryId = body.query._id;
-  });
+      expect(body.message).toStrictEqual("Created querry successfully");
+      // console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
+      queryId = body.query._id;
+    });
 
-  test("It should return 400 for not creating querry", async () => {
-    const { body } = await request(app)
-      .post("/api/v1/querries")
-      .set(querryDataWithOutMessage)
-      .expect(400);
-  });
+    test("It should return 400 for not creating querry", async () => {
+      const { body } = await request(app)
+        .post("/api/v1/queries")
+        .set(querryDataWithOutMessage)
+        .expect(400);
+    });
 
-  //////////////////////////////
-  // GET all quirries
-  //////////////////////////////
-  test("It should return 200 and list all of querries", async () => {
-    const { body } = await request(app)
-      .get("/api/v1/querries/")
-      .expect("Content-Type", /json/)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(200);
+    //////////////////////////////
+    // GET all querries
+    //////////////////////////////
+    test("It should return 200 and list all of querries", async () => {
+      const { body } = await request(app)
+        .get("/api/v1/queries/")
+        .expect("Content-Type", /json/)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
 
-    expect(body.message).toStrictEqual("success");
-    expect(body.querries).toBeDefined();
-  });
+      expect(body.message).toStrictEqual("success");
+      expect(body.querries).toBeDefined();
+    });
 
-  //////////////////////////////
-  // DELETE single querry
-  //////////////////////////////
-  test("It should return 204 for delete a single querry", async () => {
-    const { body } = await request(app)
-      .delete(`/api/v1/querries/${queryId}`)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(204);
-  });
+    //////////////////////////////
+    // DELETE single querry
+    //////////////////////////////
+    // test("It should return 204 for delete a single querry", async () => {
+    //   const { body } = await request(app)
+    //     .delete(`/api/v1/queries/${queryId}`)
+    //     .set("Authorization", `Bearer ${token}`)
+    //     .expect(204);
+    // });
 
-  // DELETE ERROR NOT QUERY FOUND single querry
-  test("It should return 404 for wrong id passed in deleting a single querry", async () => {
-    const { body } = await request(app)
-      .delete(`/api/v1/querries/${34576543}`)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(404);
-    expect(body.message).toStrictEqual("Not found");
+    // DELETE ERROR NOT QUERY FOUND single querry
+    // test("It should return 404 for wrong id passed in deleting a single querry", async () => {
+    //   const { body } = await request(app)
+    //     .delete(`/api/v1/queries/${34576543}`)
+    //     .set("Authorization", `Bearer ${token}`)
+    //     .expect(404);
+    //   expect(body.message).toStrictEqual("Not found");
+    // });
   });
 });

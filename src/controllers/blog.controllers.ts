@@ -172,7 +172,7 @@ const httpDeleteBlog = async (req: Request, res: Response) => {
     // step 1. find be id and delete
     await Blog.deleteOne({ _id: id });
     //  step 2. send not content code status and then send empty object
-    res.status(204).json({ status: "204", message: "No content" });
+    res.status(200).json({ status: "200", message: "delete successfully" });
   } catch (error) {
     res.status(404).json({
       status: "404",
