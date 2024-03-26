@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/index.js",
     "dev": "ts-node-dev ./src/index.ts",
-    "test": "jest --watchAll --no-cache --detectopenhandles ",
-    "test:ci": "jest --detectopenhandles --coverage"
+    "test": "jest --watchAll --no-cache --detectOpenHandles",
+    "test:ci": "jest --detectOpenHandles --coverage"
   },
   "keywords": [],
   "author": "",
