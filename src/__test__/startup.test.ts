@@ -35,7 +35,7 @@ describe("Blog API", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany({});
-    await Blog.deleteMany({});
+    // await Blog.deleteMany({});
     await mongoDisconnectToTestingDB();
   });
 
