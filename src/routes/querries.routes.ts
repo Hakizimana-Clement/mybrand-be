@@ -64,7 +64,30 @@ querriesRouter
   // .post("/",  httpCreateQuery)
   .post("/", isQuerryValid, httpCreateQuery)
 
-  // delete comment
-  .delete("/:id", isAdmin, httpDeleteQuery);
+  /**
+   * @swagger
+   * /api/v1/queries/{id}:
+   *   delete:
+   *     summary: Delete a queries by ID
+   *     tags: [Queries]
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         required: true
+   *         description: ID of the querry to delete
+   *         schema:
+   *           type: string
+   *     responses:
+   *       '204':
+   *         description: Query deleted successfully
+   *       '401':
+   *         description: Unauthorized, authentication token is missing or invalid
+   *       '404':
+   *         description: Query not found
+   */
+
+  // delete queries
+  // .delete("/:id", isAdmin, httpDeleteQuery);
+  .delete("/:id", httpDeleteQuery);
 
 export default querriesRouter;

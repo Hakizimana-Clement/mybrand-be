@@ -14,16 +14,15 @@
 // // import like
 // import { getAllLikes, createLike } from "../controllers/like.controllers";
 // // import comment
-// import {
-//   createComment,
-//   getAllComments,
-// } from "../controllers/comment.controllers";
-
+import {
+  createComment,
+  getAllComments,
+} from "../controllers/comment.controllers";
 // //////////// validation //////////////
 
 // import { isDeleteValid, isValid } from "../middleware/blogMiddleware";
 // import isUpdateValid from "../middleware/blogUpdateMiddleware";
-// import isCommentValid from "../middleware/commentMiddleware";
+import isCommentValid from "../middleware/commentMiddleware";
 // // import { isAdminNow, isLoggedInNow } from "../middleware/authenticationMiddleware";
 import { isAdmin, isLogin } from "../middleware/authCheck";
 // // middleware
@@ -323,6 +322,112 @@ blogRouter
    *         description: Blog not found
    */
   // .delete("/:id", isAdmin, httpDeleteBlog);
-  .delete("/:id", httpDeleteBlog);
+  .delete("/:id", httpDeleteBlog)
+
+  ////////////////////////////// COMMENT ROUTES /////////////////////////////////////
+  /**
+   * @swagger
+   * tags:
+   *   name: Comments
+   *   description: API endpoints for managing comments on blog posts
+   */
+
+  /**
+   * @swagger
+   * /api/v1/blogs/{blogId}/comments:
+   *   get:
+   *     summary: Get all comments for a specific blog post
+   *     tags: [Comments]
+   *     parameters:
+   *       - in: path
+   *         name: blogId
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: The ID of the blog post
+   *     responses:
+   *       '200':
+   *         description: A list of comments for the specified blog post
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: "200"
+   *                 message:
+   *                   type: string
+   *                   example: "Success"
+   *                 comments:
+   *                   type: array
+   *                   items:
+   *                     $ref: '#/components/schemas/Comment'
+   *       '404':
+   *         description: Blog post not found or no comments found
+   *         content:
+   *           application/json:
+   *             schema:
+  //  *               $ref: '#/components/schemas/Error'
+   */
+
+  // get all comment
+  // .get("/:id/comments", isAdmin, getAllComments)
+  .get("/:id/comments", getAllComments)
+
+  /**
+   * @swagger
+   * /api/v1/blogs/{blogId}/comments:
+   *   post:
+   *     summary: Create a new comment for a specific blog post
+   *     tags: [Comments]
+   *     parameters:
+   *       - in: path
+   *         name: blogId
+   *         required: true
+   *         schema:
+   *           type: string
+   *         description: The ID of the blog post
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '##/components/schemas/NewComment'
+   *     responses:
+   *       '201':
+   *         description: Comment created successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 status:
+   *                   type: string
+   *                   example: "201"
+   *                 message:
+   *                   type: string
+   *                   example: "Created"
+   *                 comment:
+   *                   $ref: '##/components/schemas/Comment'
+   *       '400':
+   *         description: Bad request or validation error
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '##/components/schemas/Error'
+   *
+   *       '401':
+   *         description: Unauthorized, authentication token is missing
+   *       '404':
+   *         description: Blog post not found
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '##/components/schemas/Error'
+   */
+  // Create comment
+  // .post("/:id/comments", isAdmin, isCommentValid, createComment);
+  .post("/:id/comments", isCommentValid, createComment);
 
 export default blogRouter;

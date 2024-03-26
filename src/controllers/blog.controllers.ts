@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-// const Blog = require("../models/blogModel");
 import { Request, Response } from "express";
 import Blog from "../models/blogModels";
 import mongoose from "mongoose";
