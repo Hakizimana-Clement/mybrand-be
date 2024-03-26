@@ -12,8 +12,14 @@ jobs:
           name: Install dependencies
           command: npm install
       - run:
-          name: Run tests
-          command: npm run test
+          name: install coverall version 3.1.1
+          command: npm install coveralls@3.1.1
+      - run:
+          name: install last uuid 
+          command: npm install uuid@latest
+      - run:
+          name: Run coverage
+          command: npm run test:ci
       - run:
           name: Run coverage
           command: npm run test:ci
