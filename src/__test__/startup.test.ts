@@ -346,55 +346,35 @@ describe("Blog API", () => {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   describe("isAdmin middleware", () => {
     it("should allow access for admin user", async () => {
-      // Mocking an admin user's JWT token
       const adminToken = token;
-
-      // Send a request with the admin token in the Authorization header
       const response = await request(app)
         .get("/api/v1/queries")
         .set("Authorization", `Bearer ${adminToken}`);
-
-      // Expect the response status to be 200 or the appropriate status code
-      expect(response.status).toBe(200); // Change to appropriate status code
-
-      // Add more assertions as needed
+      expect(response.status).toBe(200);
     });
 
     it("should reject requests without authorization header", async () => {
-      // Send a request without an authorization header
       const response = await request(app).get("/api/v1/queries");
-
-      // Expect the response status to be 401 (Unauthorized)
       expect(response.status).toBe(401);
-
-      // Add more assertions as needed
     });
 
     it("should reject requests with invalid authorization header", async () => {
       // Send a request with an invalid authorization header
       const response = await request(app)
-        .get("/your-protected-route")
+        .get("/api/v1/queries")
         .set("Authorization", "Bearer 34567uhgfdsae5678ijhgfdsw34");
-
-      // Expect the response status to be 401 (Unauthorized)
       expect(response.status).toBe(401);
-
-      // Add more assertions as needed
     });
 
     it("should reject requests from non-admin users", async () => {
-      // Mocking a non-admin user's JWT token
-      const nonAdminToken = "23456yrew345t";
+      const nonAdminToken =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjAyZDBkYzNlZTdlOTQ2NTk4MjVmMzIiLCJuYW1lIjoiZmlkZWxlIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTE0NjA2NTQsImV4cCI6MTcxMTU0NzA1NH0.PRd0qGppTjWwis9gZjlQ64hfMfzPow6BAn_SmDEXPjs";
 
-      // Send a request with the non-admin token in the Authorization header
       const response = await request(app)
-        .get("/your-protected-route")
+        .get("/api/v1/queries")
         .set("Authorization", `Bearer ${nonAdminToken}`);
 
-      // Expect the response status to be 406 (Not Acceptable) or another appropriate status code
-      expect(response.status).toBe(406); // Change to appropriate status code
-
-      // Add more assertions as needed
+      expect(response.status).toBe(401);
     });
   });
 });
