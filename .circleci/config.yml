@@ -23,7 +23,7 @@ jobs:
           command: npm run test:ci
       - run:
           name: Upload coverage to Coveralls
-          command: ./upload-coveralls.sh
+          command: chmod +x upload-coveralls.sh
 
 workflows:
   version: 2
