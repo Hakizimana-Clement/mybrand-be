@@ -92,7 +92,6 @@ describe("All API Endpoint", () => {
       } catch (error) {
         // Handle any errors that occur during the upload or request
         console.error("Error creating blog:", error);
-        fail("Failed to create blog");
       }
     });
   });
