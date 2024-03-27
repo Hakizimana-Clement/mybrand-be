@@ -25,12 +25,12 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
       email: userExist?.email,
     };
 
-    // unable admin role checking
+    // check  if user is admin
     // (req as CustomRequest).user = userData;
     // if (userDetail.role !== "admin") {
     //   return res
-    //     .status(406)
-    //     .json({ message: "Only admin can perform this action" });
+    //     .status(403)
+    //     .json({ status: "403", message: "Only admin can perform this action" });
     // }
 
     next();
@@ -42,8 +42,6 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     });
   }
 };
-// message: "Unauthorized",
-// error: "No valid credential",
 
 const isLogin = async (req: Request, res: Response, next: NextFunction) => {
   try {

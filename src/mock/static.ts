@@ -54,11 +54,11 @@ export const querryData = {
 };
 
 export const querryDataWithOutMessage = {
-  name: "Francisco Simmons",
-  email: "Francisco@cupo.pk",
+  title: "Francisco Simmons",
+  data: "Francisco@cupo.pk",
 };
 
-/////////// comment ////////////////
+////////////////
 export const commentDatas = {
   name: "niyibizi niyibize",
   email: "bi@ezhoz.sr",

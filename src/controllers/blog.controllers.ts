@@ -128,41 +128,6 @@ const httpCreateBlog = async (req: Request, res: Response) => {
 // // Update blog
 // //////////////////////////////////
 const httpUpdateBlog = async (req: Request, res: Response) => {
-  // step 1. Get id from client
-  // const { id } = req.params;
-  // check if data is empty before saving to database
-  // const allData = req.body;
-  // if (Object.keys(allData).length === 0) {
-  //   return res.status(400).json({
-  //     status: "400",
-  //     message: "Bad request",
-  //     error: "Field is not allowed to be empty",
-  //   });
-  // }
-  // try {
-  //   const blog = await Blog.findOneAndUpdate(
-  //     { _id: id },
-  //     { ...req.body },
-  //     { new: true }
-  //   );
-
-  //   if (!blog) {
-  //     return res.status(404).json({
-  //       status: "404",
-  //       message: "Not found",
-  //       error: "Blog Not Found",
-  //     });
-  //   }
-  //   res
-  //     .status(200)
-  //     .json({ status: "200", message: "Blog update successfully", blog: blog });
-  // } catch (error) {
-  //   res.status(404).json({
-  //     status: "404",
-  //     message: "Not found",
-  //     error: "Blog Not Found",
-  //   });
-  // }
   // new way to update
   try {
     const blog = await Blog.findOne({ _id: req.params.id });

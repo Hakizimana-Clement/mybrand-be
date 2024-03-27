@@ -14,8 +14,8 @@ import {
   adminSignupData,
   blogData,
   commentDatas,
-  querryDataWithOutMessage,
   querryData,
+  querryDataWithOutMessage,
   updateBlogData,
 } from "../mock/static";
 jest.setTimeout(20000);
@@ -80,7 +80,7 @@ describe("Blog API", () => {
 
   //   console.log("bbbbbbbbbbbb blog id bbbbbbbbbbbbb", blogId);
   // });
-  // // Test case for creating a blog
+  // Test case for creating a blog
   // test("It should return 201 and Create new blog", async () => {
   //   const imagePath = path.resolve(__dirname, "image.jpg");
   //   const { body } = await request(app)
@@ -88,7 +88,8 @@ describe("Blog API", () => {
   //     .set("Authorization", `Bearer ${token}`)
   //     .field("title", blogData.title)
   //     .field("writer", blogData.writer)
-  //     .field("content", blogData.content) .attach("blogImage", imagePath)
+  //     .field("content", blogData.content)
+  //     .attach("blogImage", imagePath) // Attach the image file
   //     .expect(201);
 
   //   expect(body.blog).toHaveProperty("_id");
@@ -182,10 +183,11 @@ describe("Blog API", () => {
   //     .expect(200);
   //   console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv", blogId);
   // });
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // CREATE LIKE
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
   describe("Like", () => {
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // CREATE LIKE
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////
     // test("It should return 201 for creating like on single post", async () => {
     //   const { body, status } = await request(app)
     //     .post(`/api/v1/blogs/${blogId}/likes`)
@@ -238,55 +240,161 @@ describe("Blog API", () => {
   // QUERY
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // describe("Query Endpoint", () => {
-  //   test("It should create a query and return 201", async () => {
+  // describe("Query enpoint", () => {
+  //   //////////////////////////////
+  //   // CREATE a querry
+  //   //////////////////////////////
+  //   test("It should return 201 for creating querry", async () => {
   //     const { body } = await request(app)
   //       .post("/api/v1/queries")
+  //       .expect("Content-Type", /json/)
   //       .send(querryData)
   //       .expect(201);
 
-  //     expect(body.message).toBe("Created querry successfully");
-  //     expect(body.query._id).toBeDefined();
+  //     expect(body.message).toStrictEqual("Created querry successfully");
+  //     // console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
   //     queryId = body.query._id;
   //   });
 
-  //   test("It should return 400 for invalid query data", async () => {
+  //   test("It should return 400 for not creating querry", async () => {
   //     const { body } = await request(app)
   //       .post("/api/v1/queries")
-  //       .send(querryDataWithOutMessage)
-  //       .set("Authorization", `Bearer ${token}`)
+  //       .set(querryDataWithOutMessage)
   //       .expect(400);
-
-  //     expect(body.status).toBe("400");
-  //     expect(body.message).toBe("Bad request");
   //   });
 
-  //   test("It should return 200 and list all queries", async () => {
+  //   //////////////////////////////
+  //   // GET all querries
+  //   //////////////////////////////
+  //   test("It should return 200 and list all of querries", async () => {
   //     const { body } = await request(app)
-  //       .get("/api/v1/queries")
-  //       .expect(200)
-  //       .set("Authorization", `Bearer ${token}`);
+  //       .get("/api/v1/queries/")
+  //       .expect("Content-Type", /json/)
+  //       .set("Authorization", `Bearer ${token}`)
+  //       .expect(200);
 
-  //     expect(body.message).toBe("success");
+  //     expect(body.message).toStrictEqual("success");
   //     expect(body.querries).toBeDefined();
   //   });
 
-  //   test("It should delete a query and return 200", async () => {
-  //     await request(app)
-  //       .delete(`/api/v1/queries/${queryId}`)
-  //       .expect(200)
-  //       .set("Authorization", `Bearer ${token}`);
-  //   });
+  //   //////////////////////////////
+  //   // DELETE single querry
+  //   //////////////////////////////
+  //   // test("It should return 204 for delete a single querry", async () => {
+  //   //   const { body } = await request(app)
+  //   //     .delete(`/api/v1/queries/${queryId}`)
+  //   //     .set("Authorization", `Bearer ${token}`)
+  //   //     .expect(200);
+  //   // });
 
-  //   test("It should return 404 for deleting a non-existent query", async () => {
-  //     const nonExistentQueryId = "nonExistentId";
-  //     const { body } = await request(app)
-  //       .delete(`/api/v1/queries/${nonExistentQueryId}`)
-  //       .expect(404)
-  //       .set("Authorization", `Bearer ${token}`);
-
-  //     expect(body.status).toBe("404");
-  //     expect(body.error).toBe("Query Not Found");
-  //   });
+  //   // DELETE ERROR NOT QUERY FOUND single querry
+  //   // test("It should return 404 for wrong id passed in deleting a single querry", async () => {
+  //   //   const { body } = await request(app)
+  //   //     .delete(`/api/v1/queries/${34576543}`)
+  //   //     .set("Authorization", `Bearer ${token}`)
+  //   //     .expect(404);
+  //   //   expect(body.message).toStrictEqual("Not found");
+  //   // });
   // });
+  describe("Query Endpoint", () => {
+    // let queryId;
+
+    test("It should create a query and return 201", async () => {
+      const { body } = await request(app)
+        .post("/api/v1/queries")
+        .send(querryData)
+        .expect(201);
+
+      expect(body.message).toStrictEqual("Created querry successfully");
+      expect(body.query._id).toBeDefined();
+      queryId = body.query._id;
+    });
+
+    test("It should return 200 and list all queries", async () => {
+      const { body } = await request(app)
+        .get("/api/v1/queries")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
+
+      expect(body.message).toBe("success");
+      expect(body.querries).toBeDefined();
+    });
+
+    test("It should delete a query and return 200", async () => {
+      await request(app)
+        .delete(`/api/v1/queries/${queryId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
+    });
+
+    test("It should return 404 for deleting a non-existent query", async () => {
+      const nonExistentQueryId = "123458329";
+      const { body } = await request(app)
+        .delete(`/api/v1/queries/${nonExistentQueryId}`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect(404);
+
+      expect(body.status).toBe("404");
+      expect(body.error).toBe("Query Not Found");
+    });
+  });
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // QUERY
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  describe("isAdmin middleware", () => {
+    it("should allow access for admin user", async () => {
+      // Mocking an admin user's JWT token
+      const adminToken = token;
+
+      // Send a request with the admin token in the Authorization header
+      const response = await request(app)
+        .get("/api/v1/queries")
+        .set("Authorization", `Bearer ${adminToken}`);
+
+      // Expect the response status to be 200 or the appropriate status code
+      expect(response.status).toBe(200); // Change to appropriate status code
+
+      // Add more assertions as needed
+    });
+
+    it("should reject requests without authorization header", async () => {
+      // Send a request without an authorization header
+      const response = await request(app).get("/api/v1/queries");
+
+      // Expect the response status to be 401 (Unauthorized)
+      expect(response.status).toBe(401);
+
+      // Add more assertions as needed
+    });
+
+    it("should reject requests with invalid authorization header", async () => {
+      // Send a request with an invalid authorization header
+      const response = await request(app)
+        .get("/your-protected-route")
+        .set("Authorization", "Bearer 34567uhgfdsae5678ijhgfdsw34");
+
+      // Expect the response status to be 401 (Unauthorized)
+      expect(response.status).toBe(401);
+
+      // Add more assertions as needed
+    });
+
+    it("should reject requests from non-admin users", async () => {
+      // Mocking a non-admin user's JWT token
+      const nonAdminToken = "23456yrew345t";
+
+      // Send a request with the non-admin token in the Authorization header
+      const response = await request(app)
+        .get("/your-protected-route")
+        .set("Authorization", `Bearer ${nonAdminToken}`);
+
+      // Expect the response status to be 406 (Not Acceptable) or another appropriate status code
+      expect(response.status).toBe(406); // Change to appropriate status code
+
+      // Add more assertions as needed
+    });
+  });
 });
