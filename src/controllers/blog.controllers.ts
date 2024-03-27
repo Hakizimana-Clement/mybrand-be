@@ -85,11 +85,11 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     });
     // step 2. save them
     await blog.save();
-    console.log("yyyyyyyyyyyyyyyyyy blog", blog);
-    console.log(
-      "ffffffffffffffffff image upload fffffffffffffffffffffffffffff",
-      uploadImageToCloudinary
-    );
+    // console.log("yyyyyyyyyyyyyyyyyy blog", blog);
+    // console.log(
+    //   "ffffffffffffffffff image upload fffffffffffffffffffffffffffff",
+    //   uploadImageToCloudinary
+    // );
     // const blog = await Blog.create({
     //   title: req.body.title,
     //   writer: req.body.writer,
