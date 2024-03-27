@@ -26,13 +26,13 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
   // step 2. use try/catch block to prevent error can occur
   try {
     // check if id is valid as mongoose id
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(404).json({
-        status: "404",
-        message: "Blog Not found",
-        error: "Blog Not Found",
-      });
-    }
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //   return res.status(404).json({
+    //     status: "404",
+    //     message: "Blog Not found",
+    //     error: "Blog Not Found",
+    //   });
+    // }
     // step 3. use findOne method
     const blog = await Blog.findOne({ _id: id });
     // check if that blog exist

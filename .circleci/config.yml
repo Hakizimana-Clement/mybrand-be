@@ -16,14 +16,8 @@ jobs:
           name: Install Coveralls version 3.1.1
           command: npm install coveralls@3.1.1
       - run:
-          name: Install latest UUID
-          command: npm install uuid@latest
-      - run:
           name: Run coverage
           command: npm run test:ci
-      - run:
-          name: Upload coverage to Coveralls using command
-          command: chmod +x upload-coveralls.sh
       - run:
           name: Upload coverage to Coveralls
           command: npx coveralls < coverage/lcov.info
