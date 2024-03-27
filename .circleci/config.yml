@@ -1,7 +1,8 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.2.0
+  node: circleci/node@5.1.0
   coveralls: coveralls/coveralls@2.2.1
+
 jobs:
   test:
     docker:
@@ -12,14 +13,11 @@ jobs:
           name: Install dependencies
           command: npm install
       - run:
-          name: install coverall version 3.1.1
+          name: Install Coveralls version 3.1.1
           command: npm install coveralls@3.1.1
       - run:
-          name: install last uuid 
+          name: Install latest UUID
           command: npm install uuid@latest
-      - run:
-          name: Run coverage
-          command: npm run test:ci
       - run:
           name: Run coverage
           command: npm run test:ci
@@ -31,4 +29,4 @@ workflows:
   version: 2
   test:
     jobs:
-      - build
+      - test
