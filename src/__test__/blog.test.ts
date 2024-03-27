@@ -33,7 +33,7 @@ describe("All API Endpoint", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany({});
-    await Blog.deleteMany({});
+    // await Blog.deleteMany({});
     await mongoDisconnectToTestingDB();
   });
 
@@ -120,6 +120,7 @@ describe("All API Endpoint", () => {
     // blog GET a single blog test
     //////////////////////////////
     test("It should return 200 and single blog", async () => {
+      console.log("blog iddddddddddddddddddddddddddddd", blogId);
       const { body } = await request(app)
         .get(`/api/v1/blogs/${blogId}`)
         .expect("Content-Type", /json/)
