@@ -55,29 +55,7 @@ describe("All API Endpoint", () => {
 
   describe("Blog endpoint", () => {
     it("should return 201 and create a new blog", async () => {
-      // const uploadImageToCloudinary = await cloudinary.uploader.upload(
-      //   imagePath
-      // );
-      // // Send a request to create a blog endpoint
-      // const response = await request(app)
-      //  .post('/api/v1/blogs')
-      //   .set('Authorization', `Bearer ${token}`)
-      //   .field('title', blogData.title)
-      //   .field('writer', blogData.writer)
-      //   .field('writeImage', blogData.writeImage)
-      //   .field('content', blogData.content)
-      //   .attach('blogImage', uploadImageToCloudinary.secure_url);
-      // console.log("newwwwwwwwwwwwwwwwwwwww", console.log(response.body));
-      // // Assert that the response is successful
-      // expect(response.body.status).toBe(201);
-      // expect(response.body.message).toBe("Blog created");
-      // Upload the image to Cloudinary
       try {
-        const uploadResponse = await cloudinary.uploader.upload(imagePath);
-        const imageUrl = uploadResponse.secure_url;
-        console.log("iiiiiiiiiiimmmmmmmmmmmmaaaaaaaaaaage", imageUrl);
-        console.log("iiiiiiiiiiiToooooookennaaaaaaage", token);
-
         // Send a request to create a blog endpoint
         const response = await request(app)
           .post("/api/v1/blogs")
