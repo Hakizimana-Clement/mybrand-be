@@ -8,7 +8,8 @@
     "dev": "ts-node-dev ./src/index.ts",
     "test": "jest --no-cache --detectOpenHandles",
     "test-test": "jest --watchAll --no-cache --detectOpenHandles",
-    "test:ci": "jest --detectOpenHandles --coverage"
+    "test:ci": "jest --detectOpenHandles --coverage",
+    "upload-coveralls":"chmod +x upload-coveralls.sh"
   },
   "keywords": [],
   "author": "",
