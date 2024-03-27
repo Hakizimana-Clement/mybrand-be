@@ -280,7 +280,7 @@ blogRouter
    *     requestBody:
    *       required: true
    *       content:
-   *         application/json:
+   *         multipart/form-data:
    *           schema:
    *             type: object
    *             properties:
@@ -288,15 +288,16 @@ blogRouter
    *                 type: string
    *               writer:
    *                 type: string
-   *               writeImage:
-   *                 type: string
    *               blogImage:
    *                 type: string
+   *                 format: binary
    *               content:
    *                 type: string
    *     responses:
    *       '200':
    *         description: Blog updated successfully
+   *       '401':
+   *         description: Unauthorized, authentication token is missing
    *       '400':
    *         description: Bad request
    *       '404':
@@ -304,7 +305,13 @@ blogRouter
    *     security:
    *       - bearerAuth: []
    */
-  .patch("/:id", isAdmin, httpUpdateBlog)
+  .patch(
+    "/:id",
+    isAdmin,
+
+    uploadImageMiddleware.single("blogImage"),
+    httpUpdateBlog
+  )
   // .patch("/:id", httpUpdateBlog)
 
   /**

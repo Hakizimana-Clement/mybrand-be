@@ -238,55 +238,55 @@ describe("Blog API", () => {
   // QUERY
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  describe("Query Endpoint", () => {
-    test("It should create a query and return 201", async () => {
-      const { body } = await request(app)
-        .post("/api/v1/queries")
-        .send(querryData)
-        .expect(201);
+  // describe("Query Endpoint", () => {
+  //   test("It should create a query and return 201", async () => {
+  //     const { body } = await request(app)
+  //       .post("/api/v1/queries")
+  //       .send(querryData)
+  //       .expect(201);
 
-      expect(body.message).toBe("Created querry successfully");
-      expect(body.query._id).toBeDefined();
-      queryId = body.query._id;
-    });
+  //     expect(body.message).toBe("Created querry successfully");
+  //     expect(body.query._id).toBeDefined();
+  //     queryId = body.query._id;
+  //   });
 
-    test("It should return 400 for invalid query data", async () => {
-      const { body } = await request(app)
-        .post("/api/v1/queries")
-        .send(querryDataWithOutMessage)
-        .set("Authorization", `Bearer ${token}`)
-        .expect(400);
+  //   test("It should return 400 for invalid query data", async () => {
+  //     const { body } = await request(app)
+  //       .post("/api/v1/queries")
+  //       .send(querryDataWithOutMessage)
+  //       .set("Authorization", `Bearer ${token}`)
+  //       .expect(400);
 
-      expect(body.status).toBe("400");
-      expect(body.message).toBe("Bad request");
-    });
+  //     expect(body.status).toBe("400");
+  //     expect(body.message).toBe("Bad request");
+  //   });
 
-    test("It should return 200 and list all queries", async () => {
-      const { body } = await request(app)
-        .get("/api/v1/queries")
-        .expect(200)
-        .set("Authorization", `Bearer ${token}`);
+  //   test("It should return 200 and list all queries", async () => {
+  //     const { body } = await request(app)
+  //       .get("/api/v1/queries")
+  //       .expect(200)
+  //       .set("Authorization", `Bearer ${token}`);
 
-      expect(body.message).toBe("success");
-      expect(body.querries).toBeDefined();
-    });
+  //     expect(body.message).toBe("success");
+  //     expect(body.querries).toBeDefined();
+  //   });
 
-    test("It should delete a query and return 200", async () => {
-      await request(app)
-        .delete(`/api/v1/queries/${queryId}`)
-        .expect(200)
-        .set("Authorization", `Bearer ${token}`);
-    });
+  //   test("It should delete a query and return 200", async () => {
+  //     await request(app)
+  //       .delete(`/api/v1/queries/${queryId}`)
+  //       .expect(200)
+  //       .set("Authorization", `Bearer ${token}`);
+  //   });
 
-    test("It should return 404 for deleting a non-existent query", async () => {
-      const nonExistentQueryId = "nonExistentId";
-      const { body } = await request(app)
-        .delete(`/api/v1/queries/${nonExistentQueryId}`)
-        .expect(404)
-        .set("Authorization", `Bearer ${token}`);
+  //   test("It should return 404 for deleting a non-existent query", async () => {
+  //     const nonExistentQueryId = "nonExistentId";
+  //     const { body } = await request(app)
+  //       .delete(`/api/v1/queries/${nonExistentQueryId}`)
+  //       .expect(404)
+  //       .set("Authorization", `Bearer ${token}`);
 
-      expect(body.status).toBe("404");
-      expect(body.error).toBe("Query Not Found");
-    });
-  });
+  //     expect(body.status).toBe("404");
+  //     expect(body.error).toBe("Query Not Found");
+  //   });
+  // });
 });

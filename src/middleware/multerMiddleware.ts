@@ -13,6 +13,7 @@ const upload = multer({
       ext !== ".gif" &&
       ext !== ".webp" &&
       ext !== ".bmp" &&
+      ext !== ".svg" &&
       ext !== ".tiff" &&
       ext !== ".jfif" &&
       ext !== ".tif"

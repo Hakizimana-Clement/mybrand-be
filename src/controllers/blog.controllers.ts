@@ -57,13 +57,15 @@ const httpGetSingleBlog = async (req: Request, res: Response) => {
 //////////////////////////////////
 // Create blog
 //////////////////////////////////
-
+// let blogImage
 const httpCreateBlog = async (req: Request, res: Response) => {
   // console.log(
   //   "ffffffffffffffffff file image fffffffffffffffffffffffffffff",
   //   req.file
   // );
+  // blogImage = req.file
   try {
+    // if (!blogImage) {
     if (!req.file) {
       console.log(req.file);
       return res
@@ -127,22 +129,43 @@ const httpCreateBlog = async (req: Request, res: Response) => {
 // //////////////////////////////////
 const httpUpdateBlog = async (req: Request, res: Response) => {
   // step 1. Get id from client
-  const { id } = req.params;
+  // const { id } = req.params;
   // check if data is empty before saving to database
-  const allData = req.body;
-  if (Object.keys(allData).length === 0) {
-    return res.status(400).json({
-      status: "400",
-      message: "Bad request",
-      error: "Field is not allowed to be empty",
-    });
-  }
+  // const allData = req.body;
+  // if (Object.keys(allData).length === 0) {
+  //   return res.status(400).json({
+  //     status: "400",
+  //     message: "Bad request",
+  //     error: "Field is not allowed to be empty",
+  //   });
+  // }
+  // try {
+  //   const blog = await Blog.findOneAndUpdate(
+  //     { _id: id },
+  //     { ...req.body },
+  //     { new: true }
+  //   );
+
+  //   if (!blog) {
+  //     return res.status(404).json({
+  //       status: "404",
+  //       message: "Not found",
+  //       error: "Blog Not Found",
+  //     });
+  //   }
+  //   res
+  //     .status(200)
+  //     .json({ status: "200", message: "Blog update successfully", blog: blog });
+  // } catch (error) {
+  //   res.status(404).json({
+  //     status: "404",
+  //     message: "Not found",
+  //     error: "Blog Not Found",
+  //   });
+  // }
+  // new way to update
   try {
-    const blog = await Blog.findOneAndUpdate(
-      { _id: id },
-      { ...req.body },
-      { new: true }
-    );
+    const blog = await Blog.findOne({ _id: req.params.id });
 
     if (!blog) {
       return res.status(404).json({
@@ -151,15 +174,31 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
         error: "Blog Not Found",
       });
     }
-    res
-      .status(200)
-      .json({ status: "200", message: "Blog update successfully", blog: blog });
-  } catch (error) {
-    res.status(404).json({
-      status: "404",
-      message: "Not found",
-      error: "Blog Not Found",
-    });
+
+    if (req.body.title) {
+      blog.title = req.body.title;
+    }
+
+    if (req.body.writer) {
+      blog.writer = req.body.writer;
+    }
+
+    if (req.file) {
+      const uploadImageToCloudinary = await cloudinary.uploader.upload(
+        req.file?.path
+      );
+      blog.blogImage = uploadImageToCloudinary.secure_url;
+    }
+
+    if (req.body.content) {
+      blog.content = req.body.content;
+    }
+
+    await blog.save();
+    res.status(200).json(blog);
+  } catch {
+    res.status(404);
+    res.send({ error: "blog doesn't exist!" });
   }
 };
 
