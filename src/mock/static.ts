@@ -12,7 +12,6 @@ export const blogData = {
 
 export const updateBlogData = {
   title: "empty child giant solid queen pair heavy circus specific...",
-  blogImage: imagePath,
   content:
     "duck bark different alike thou strange whispered radio organization recognize apart drop coast stream fallen composed cup hard letter basis bring interior air according",
 };
@@ -54,7 +53,7 @@ export const querryData = {
 
 export const querryDataWithOutMessage = {
   title: "Francisco Simmons",
-  data: "Francisco@cupo.pk",
+  name: "Francisco@cupo.pk",
 };
 
 ////////////////

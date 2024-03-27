@@ -51,11 +51,13 @@ const httpDeleteQuery = async (req: Request, res: Response) => {
     if (!blog)
       return res.status(404).json({
         status: "404",
-        message: "Notttt found",
+        message: "Not found",
         error: "Query Not Found",
       });
 
-    res.status(200).json({ status: "200", message: "delete successfully" });
+    res
+      .status(200)
+      .json({ status: "200", message: "delete query successfully" });
   } catch (error) {
     res.status(404).json({
       status: "404",

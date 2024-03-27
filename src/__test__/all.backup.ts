@@ -179,7 +179,7 @@ describe("Blog API", () => {
     });
 
     //////////////////////////////
-    // 400 for no data passed to update single blog
+    // 401 for unauthorize on update single blog
     //////////////////////////////
     test("It should return 401 for unauthorize on update single blog", async () => {
       const { body } = await request(app)
@@ -209,7 +209,7 @@ describe("Blog API", () => {
     //////////////////////////////
     test("It should return 201 for creating querry", async () => {
       const { body } = await request(app)
-        .post("/api/v1/querries")
+        .post("/api/v1/queries")
         .expect("Content-Type", /json/)
         .send(querryData)
         .expect(201);
@@ -221,17 +221,17 @@ describe("Blog API", () => {
 
     test("It should return 400 for not creating querry", async () => {
       const { body } = await request(app)
-        .post("/api/v1/querries")
+        .post("/api/v1/queries")
         .set(querryDataWithOutMessage)
         .expect(400);
     });
 
     //////////////////////////////
-    // GET all quirries
+    // GET all querries
     //////////////////////////////
     test("It should return 200 and list all of querries", async () => {
       const { body } = await request(app)
-        .get("/api/v1/querries/")
+        .get("/api/v1/queries/")
         .expect("Content-Type", /json/)
         .set("Authorization", `Bearer ${token}`)
         .expect(200);

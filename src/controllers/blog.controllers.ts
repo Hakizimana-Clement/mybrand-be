@@ -153,7 +153,9 @@ const httpUpdateBlog = async (req: Request, res: Response) => {
     }
 
     await blog.save();
-    res.status(200).json(blog);
+    res
+      .status(200)
+      .json({ status: "200", message: "Blog update successfully", blog: blog });
   } catch {
     res.status(404);
     res.send({ error: "blog doesn't exist!" });
