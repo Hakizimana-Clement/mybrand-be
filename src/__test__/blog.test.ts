@@ -10,8 +10,7 @@ import {
   querryData,
   querryDataWithOutMessage,
   updateBlogData,
-} from "../mock/static"; // Import your test blog data
-import cloudinary from "../utils/cloudinary";
+} from "../mock/static";
 import path from "path";
 const imagePath = path.resolve(__dirname, "image.jpg");
 import {
@@ -19,7 +18,8 @@ import {
   mongoDisconnectToTestingDB,
 } from "../services/mongo.testing";
 
-let blogId: mongoose.Types.ObjectId;
+// let blogId: mongoose.Types.ObjectId;
+let blogId: string;
 let token: string;
 let queryId: string;
 
