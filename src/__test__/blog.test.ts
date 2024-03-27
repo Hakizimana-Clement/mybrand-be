@@ -18,8 +18,8 @@ import {
   mongoDisconnectToTestingDB,
 } from "../services/mongo.testing";
 
-// let blogId: mongoose.Types.ObjectId;
-let blogId: string;
+// let blogId: string;
+let blogId: mongoose.Types.ObjectId;
 let token: string;
 let queryId: string;
 
@@ -33,7 +33,7 @@ describe("All API Endpoint", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany({});
-    // await Blog.deleteMany({});
+    await Blog.deleteMany({});
     await mongoDisconnectToTestingDB();
   });
 
@@ -83,7 +83,8 @@ describe("All API Endpoint", () => {
           .field("writer", blogData.writer)
           .field("writeImage", blogData.writeImage)
           .field("content", blogData.content)
-          .attach("blogImage", imagePath);
+          .attach("blogImage", imagePath)
+          .expect(201);
 
         expect(body.message).toStrictEqual("Blog created");
 
