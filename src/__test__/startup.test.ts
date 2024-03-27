@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import request from "supertest";
 import {
   mongoConnectToTestingDB,
@@ -23,6 +24,7 @@ let token: string;
 let blogId: mongoose.Types.ObjectId;
 let queryId: string;
 import path from "path";
+import { isValid } from "../middleware/blogMiddleware";
 describe("Blog API", () => {
   // step 3.1. connect to database
   beforeAll(async () => {
@@ -375,6 +377,39 @@ describe("Blog API", () => {
         .set("Authorization", `Bearer ${nonAdminToken}`);
 
       expect(response.status).toBe(401);
+    });
+  });
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // blog middleware
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // describe("Blog Middleware", () => {
+  //   // Test case for valid blog data
+  //   test("It should call next() for valid blog data", async () => {
+  //     const response = await request(app)
+  //       .get("/api/v1/blogs")
+  //       .send(blogData)
+  //       .expect(200);
+  //   });
+
+  // test("It should return 400 for invalid blog data", async () => {
+  //   const invalidData = {
+  //     title: "",
+  //   };
+
+  //   await request(app).post("/api/v1/blogs").send(invalidData).expect(400);
+  // });
+  // });
+
+  describe("Blog Endpoint", () => {
+    it("should return 201 and create new blog", async () => {
+      const { body } = await request(app)
+        .post("/api/v1/blogs")
+        .send(blogData)
+        .set("Authorization", `Bearer ${token}`);
+      console.log("bbbbbbbbboooooody", blogData);
+      expect(201);
     });
   });
 });

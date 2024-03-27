@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { validateBlog, deleteValidateBlog } from "../validations/blog";
+import { validateBlog } from "../validations/blog";
 import blogModels from "../models/blogModels";
 
 const isValid = async (req: Request, res: Response, next: NextFunction) => {
@@ -27,26 +27,4 @@ const isValid = async (req: Request, res: Response, next: NextFunction) => {
     console.error("Error ", error);
   }
 };
-const isDeleteValid = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const validationResult = await deleteValidateBlog(req.body);
-
-  if (validationResult.error) {
-    const errorMessage = validationResult.error.details[0].message.replace(
-      /["\\]/g,
-      ""
-    );
-    return res.status(400).json({ error: errorMessage });
-  }
-
-  try {
-    next();
-  } catch (error) {
-    console.error("Error ", error);
-  }
-};
-
-export { isValid, isDeleteValid };
+export { isValid };

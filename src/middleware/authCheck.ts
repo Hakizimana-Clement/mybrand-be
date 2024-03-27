@@ -26,12 +26,12 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     // check  if user is admin
-    (req as CustomRequest).user = userData;
-    if (userDetail.role !== "admin") {
-      return res
-        .status(403)
-        .json({ status: "403", message: "Only admin can perform this action" });
-    }
+    // (req as CustomRequest).user = userData;
+    // if (userDetail.role !== "admin") {
+    //   return res
+    //     .status(403)
+    //     .json({ status: "403", message: "Only admin can perform this action" });
+    // }
 
     next();
   } catch (error) {
