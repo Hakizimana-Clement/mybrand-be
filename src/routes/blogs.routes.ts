@@ -242,7 +242,7 @@ blogRouter
     isValid,
     httpCreateBlog
   )
-  // .post("/", uploadImageMiddleware.single("blogImage"), httpCreateBlog)
+  // .post("/", isAdmin, uploadImageMiddleware.single("blogImage"), httpCreateBlog)
   /**
    * @swagger
    * /api/v1/blogs/{id}:

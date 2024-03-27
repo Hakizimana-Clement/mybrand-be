@@ -1,7 +1,7 @@
 import Joi from "joi";
 // blog schema to validate
 const blogSchema = Joi.object({
-  title: Joi.string().required().min(5).max(100),
+  title: Joi.string().required().min(5).max(200),
   writer: Joi.string().required().min(5).max(50),
   blogImage: Joi.string(),
   // blogImage: Joi.string().required(),

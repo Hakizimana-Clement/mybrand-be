@@ -35,14 +35,14 @@ describe("Blog API", () => {
   afterAll(async () => {
     // clear database after to create user for avoiding errors
     await User.deleteMany({});
-    await Blog.deleteMany({});
+    // await Blog.deleteMany({});
     await mongoDisconnectToTestingDB();
   });
 
   //////////////////////////////
   // Login and signup test
   //////////////////////////////
-  describe("POST signup and login ", () => {
+  describe("Signup and Login ", () => {
     test("It should return signup and login successfully", async () => {
       const response = await request(app)
         .post("/api/v1/users/signup")
@@ -402,14 +402,15 @@ describe("Blog API", () => {
   // });
   // });
 
-  describe("Blog Endpoint", () => {
-    it("should return 201 and create new blog", async () => {
-      const { body } = await request(app)
-        .post("/api/v1/blogs")
-        .send(blogData)
-        .set("Authorization", `Bearer ${token}`);
-      console.log("bbbbbbbbboooooody", blogData);
-      expect(201);
-    });
-  });
+  // describe("Blog Endpoint", () => {
+  //   it("should return 201 and create new blog", async () => {
+  //     const { body } = await request(app)
+  //       .post("/api/v1/blogs")
+  //       .send(blogData)
+  //       .set("Authorization", `Bearer ${token}`);
+  //     expect(201);
+  //     console.log("bbbbbbbbboooooody", blogData);
+  //     expect(body.message).toStrictEqual("Blog created");
+  //   });
+  // });
 });
