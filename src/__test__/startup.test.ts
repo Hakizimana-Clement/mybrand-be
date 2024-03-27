@@ -14,8 +14,8 @@ import {
   adminSignupData,
   blogData,
   commentDatas,
-  querryData,
   querryDataWithOutMessage,
+  querryData,
   updateBlogData,
 } from "../mock/static";
 jest.setTimeout(20000);
@@ -238,60 +238,55 @@ describe("Blog API", () => {
   // QUERY
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-  describe("Query enpoint", () => {
-    //////////////////////////////
-    // CREATE a querry
-    //////////////////////////////
-    test("It should return 201 for creating querry", async () => {
+  describe("Query Endpoint", () => {
+    test("It should create a query and return 201", async () => {
       const { body } = await request(app)
         .post("/api/v1/queries")
-        .expect("Content-Type", /json/)
         .send(querryData)
         .expect(201);
 
-      expect(body.message).toStrictEqual("Created querry successfully");
-      // console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww", body.querry);
+      expect(body.message).toBe("Created querry successfully");
+      expect(body.query._id).toBeDefined();
       queryId = body.query._id;
     });
 
-    test("It should return 400 for not creating querry", async () => {
+    test("It should return 400 for invalid query data", async () => {
       const { body } = await request(app)
         .post("/api/v1/queries")
-        .set(querryDataWithOutMessage)
+        .send(querryDataWithOutMessage)
+        .set("Authorization", `Bearer ${token}`)
         .expect(400);
+
+      expect(body.status).toBe("400");
+      expect(body.message).toBe("Bad request");
     });
 
-    //////////////////////////////
-    // GET all querries
-    //////////////////////////////
-    test("It should return 200 and list all of querries", async () => {
+    test("It should return 200 and list all queries", async () => {
       const { body } = await request(app)
-        .get("/api/v1/queries/")
-        .expect("Content-Type", /json/)
-        .set("Authorization", `Bearer ${token}`)
-        .expect(200);
+        .get("/api/v1/queries")
+        .expect(200)
+        .set("Authorization", `Bearer ${token}`);
 
-      expect(body.message).toStrictEqual("success");
+      expect(body.message).toBe("success");
       expect(body.querries).toBeDefined();
     });
 
-    //////////////////////////////
-    // DELETE single querry
-    //////////////////////////////
-    // test("It should return 204 for delete a single querry", async () => {
-    //   const { body } = await request(app)
-    //     .delete(`/api/v1/queries/${queryId}`)
-    //     .set("Authorization", `Bearer ${token}`)
-    //     .expect(200);
-    // });
+    test("It should delete a query and return 200", async () => {
+      await request(app)
+        .delete(`/api/v1/queries/${queryId}`)
+        .expect(200)
+        .set("Authorization", `Bearer ${token}`);
+    });
 
-    // DELETE ERROR NOT QUERY FOUND single querry
-    // test("It should return 404 for wrong id passed in deleting a single querry", async () => {
-    //   const { body } = await request(app)
-    //     .delete(`/api/v1/queries/${34576543}`)
-    //     .set("Authorization", `Bearer ${token}`)
-    //     .expect(404);
-    //   expect(body.message).toStrictEqual("Not found");
-    // });
+    test("It should return 404 for deleting a non-existent query", async () => {
+      const nonExistentQueryId = "nonExistentId";
+      const { body } = await request(app)
+        .delete(`/api/v1/queries/${nonExistentQueryId}`)
+        .expect(404)
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(body.status).toBe("404");
+      expect(body.error).toBe("Query Not Found");
+    });
   });
 });

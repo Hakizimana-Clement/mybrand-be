@@ -366,7 +366,6 @@ blogRouter
   // get all comment
   .get("/:id/comments", isAdmin, getAllComments)
   // .get("/:id/comments", getAllComments)
-
   /**
    * @swagger
    * /api/v1/blogs/{blogId}/comments:
@@ -386,6 +385,10 @@ blogRouter
    *         application/json:
    *           schema:
    *             $ref: '##/components/schemas/NewComment'
+   *           example:
+   *             name: "manzi"
+   *             email: "manzi@email.com"
+   *             comment: "I like this article so much"
    *     responses:
    *       '201':
    *         description: Comment created successfully
@@ -412,6 +415,7 @@ blogRouter
    *     security:
    *       - bearerAuth: []
    */
+
   // Create comment
   .post("/:id/comments", isAdmin, isCommentValid, createComment)
   // .post("/:id/comments", isCommentValid, createComment)
@@ -483,12 +487,6 @@ blogRouter
    *         description: ID of the blog post
    *         schema:
    *           type: string
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             $ref: '##/components/schemas/Like'
    *     responses:
    *       201:
    *         description: Like created successfully

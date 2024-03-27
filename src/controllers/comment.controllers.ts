@@ -57,7 +57,11 @@ const createComment = async (req: Request, res: Response) => {
     res.status(201).json({
       status: "201",
       message: "Created",
-      comments: newComment.comment,
+      comments: {
+        name: newComment.name,
+        email: newComment.email,
+        comments: newComment.comment,
+      },
     });
   } catch (error) {
     console.log(error);
@@ -96,20 +100,31 @@ const getAllComments = async (req: Request, res: Response) => {
       });
     }
 
-    // => blog data with comment
-    // const blogComment = await BlogModel.findById(id).populate("comments");
+    // => blog data with comment and blog data too
+    // const blogComments = await BlogModel.findById(id).populate("comments");
     // res.status(200).json({
     //   status: "200",
     //   message: "Success",
-    //   blog: blogComment,
+    //   blog: blogComments,
     // });
-
-    // // => comments only
+    // => blog data with comment array only
+    const blogComments = await BlogModel.findById(id)
+      .select("comments")
+      .populate({
+        path: "comments",
+        // select: "-blog_id -__v",
+      });
     res.status(200).json({
       status: "200",
       message: "Success",
-      comments: blogId.comments,
+      blog: blogComments,
     });
+    // // => comments only
+    // res.status(200).json({
+    //   status: "200",
+    //   message: "Success",
+    //   comments: blogId.comments,
+    // });
   } catch (error) {
     res.status(404).json({
       status: "404",
