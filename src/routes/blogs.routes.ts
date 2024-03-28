@@ -393,8 +393,6 @@ blogRouter
    *           schema:
    *             $ref: '##/components/schemas/NewComment'
    *           example:
-   *             name: "manzi"
-   *             email: "manzi@email.com"
    *             comment: "I like this article so much"
    *     responses:
    *       '201':

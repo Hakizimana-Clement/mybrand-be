@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import CommentModel from "../models/commentModels";
 import BlogModel from "../models/blogModels";
+import jwt from "jsonwebtoken";
 
 ////////////////////////////////
 // create comment
@@ -29,11 +30,15 @@ const createComment = async (req: Request, res: Response) => {
       });
     }
 
+    // decode to get name from user token
+    const token: any = req.headers.authorization?.split(" ")[1];
+    const decodedToken: any = jwt.verify(token, process.env.SECRET as string);
+    const { name } = decodedToken;
+
     // create new comments
     const newComment = new CommentModel({
       blog_id: id,
-      // name: req.body.name,
-      // email: req.body.email,
+      name,
       comment: req.body.comment,
     });
 
@@ -58,9 +63,8 @@ const createComment = async (req: Request, res: Response) => {
       status: "201",
       message: "Created",
       comments: {
-        // name: newComment.name,
-        // email: newComment.email,
-        comments: newComment.comment,
+        name: newComment.name,
+        comment: newComment.comment,
       },
     });
   } catch (error) {
