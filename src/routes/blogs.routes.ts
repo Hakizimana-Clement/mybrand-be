@@ -444,30 +444,11 @@ blogRouter
    *     responses:
    *       '200':
    *         description: A list of likes for the specified blog
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 status:
-   *                   type: string
-   *                 message:
-   *                   type: string
-   *                 likes:
-   *                   type: array
-   *                   items:
-   *                     $ref: '##/components/schemas/Like'
+   *       401:
+   *         description: Unauthorized, wrong credentials
+
    *       '404':
    *         description: Blog not found
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: object
-   *               properties:
-   *                 status:
-   *                   type: string
-   *                 error:
-   *                   type: string
    *     security:
    *       - bearerAuth: []
    */

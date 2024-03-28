@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 const likesSchema = new Schema(
   {
+    user_id: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     blog_id: {
       type: Schema.Types.ObjectId,
       ref: "Blog",

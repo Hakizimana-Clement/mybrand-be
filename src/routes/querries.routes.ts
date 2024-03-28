@@ -20,6 +20,8 @@ querriesRouter
    *     responses:
    *       '200':
    *         description: A list of queries
+   *       '401':
+   *         description: Unauthorized, authentication token is missing
    *     security:
    *     - bearerAuth: []
    */
