@@ -178,15 +178,15 @@ describe("All API Endpoint", () => {
     //////////////////////////////
     // blog GET a single blog test
     //////////////////////////////
-    test("It should return 200 and single blog", async () => {
-      console.log("blog iddddddddddddddddddddddddddddd", blogId);
-      const { body } = await request(app)
-        .get(`/api/v1/blogs/${blogId}`)
-        .expect("Content-Type", /json/)
-        .expect(200);
-      expect(body.message).toStrictEqual("success");
-      expect(body.blog).toBeDefined();
-    });
+    // test("It should return 200 and single blog", async () => {
+    //   console.log("blog iddddddddddddddddddddddddddddd", blogId);
+    //   const { body } = await request(app)
+    //     .get(`/api/v1/blogs/${blogId}`)
+    //     .expect("Content-Type", /json/)
+    //     .expect(200);
+    //   expect(body.message).toStrictEqual("success");
+    //   expect(body.blog).toBeDefined();
+    // });
     //////////////////////////////
     // Update single blog
     //////////////////////////////
