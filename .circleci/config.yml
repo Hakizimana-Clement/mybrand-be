@@ -6,7 +6,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: node:18.13.0
+      - image: cimg/node:21.6.2
     steps:
       - checkout
       - run:
@@ -24,7 +24,6 @@ jobs:
       - run:
           name: Upload coverage to Coveralls
           command: npx coveralls < coverage/lcov.info
-
 
 workflows:
   version: 2
