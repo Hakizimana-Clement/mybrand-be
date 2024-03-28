@@ -32,8 +32,8 @@ const createComment = async (req: Request, res: Response) => {
     // create new comments
     const newComment = new CommentModel({
       blog_id: id,
-      name: req.body.name,
-      email: req.body.email,
+      // name: req.body.name,
+      // email: req.body.email,
       comment: req.body.comment,
     });
 
@@ -58,8 +58,8 @@ const createComment = async (req: Request, res: Response) => {
       status: "201",
       message: "Created",
       comments: {
-        name: newComment.name,
-        email: newComment.email,
+        // name: newComment.name,
+        // email: newComment.email,
         comments: newComment.comment,
       },
     });
