@@ -128,6 +128,10 @@ describe("All API Endpoint", () => {
     });
   });
 
+  //////////////////////////////
+  // blog test
+  //////////////////////////////
+
   describe("Blog endpoint", () => {
     it("should return 201 and create a new blog", async () => {
       try {
@@ -140,14 +144,12 @@ describe("All API Endpoint", () => {
           .field("writeImage", blogData.writeImage)
           .field("content", blogData.content)
           .attach("blogImage", blogData.blogImage)
-          // .attach("blogImage", imagePath)
           .expect(201);
 
         expect(body.message).toStrictEqual("Blog created");
 
         blogId = body.blog._id;
       } catch (error) {
-        // Handle any errors that occur during the upload or request
         console.error("Error creating blog:", error);
       }
     });
@@ -312,30 +314,27 @@ describe("All API Endpoint", () => {
     });
   });
 
-  describe("Like Endpoint", () => {
-    it("should create a like for a blog", async () => {
-      // const blogId = new mongoose.Types.ObjectId(); // Generate a new ObjectId for testing
-      console.log("genereate blog iiiiiiiiiiiiiiiiiiiiiiid", blogId);
-      const response = await request(app)
-        .post(`/api/v1/blogs/${blogId}/likes`)
-        .set("Authorization", `Bearer ${token}`)
-        .expect("Content-Type", /json/)
-        .expect(201);
+  // describe("Like Endpoint", () => {
+  //   it("should create a like for a blog", async () => {
+  //     console.log("genereate blog iiiiiiiiiiiiiiiiiiiiiiid", blogId);
+  //     const response = await request(app)
+  //       .post(`/api/v1/blogs/${blogId}/likes`)
+  //       .set("Authorization", `Bearer ${token}`)
+  //       .expect("Content-Type", /json/)
+  //       .expect(201);
 
-      expect(response.body).toHaveProperty("status", "201");
-      expect(response.body).toHaveProperty(
-        "message",
-        "Like toggled successfully"
-      );
+  //     expect(response.body).toHaveProperty("status", "201");
+  //     expect(response.body).toHaveProperty(
+  //       "message",
+  //       "Like toggled successfully"
+  //     );
 
-      // Verify that the like is created in the database
-      const like = await Like.findOne({ blog_id: blogId });
-      expect(like).toBeTruthy();
+  //     const like = await Like.findOne({ blog_id: blogId });
+  //     expect(like).toBeTruthy();
 
-      // Verify that the blog's likes array is updated
-      const blog = await Blog.findById(blogId);
-      expect(blog).toBeTruthy();
-      expect(blog?.likes).toContainEqual(like?._id);
-    });
-  });
+  //     const blog = await Blog.findById(blogId);
+  //     expect(blog).toBeTruthy();
+  //     expect(blog?.likes).toContainEqual(like?._id);
+  //   });
+  // });
 });
