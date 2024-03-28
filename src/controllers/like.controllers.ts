@@ -103,8 +103,8 @@ const createLike = async (req: Request, res: Response) => {
     // Save the updated blog data
     await oneBlog.save();
 
-    res.status(200).json({
-      status: "200",
+    res.status(201).json({
+      status: "201",
       message: "Like toggled successfully",
     });
   } catch (error) {

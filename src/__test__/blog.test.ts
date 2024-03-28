@@ -2,9 +2,8 @@ import request from "supertest";
 import mongoose from "mongoose"; // Import Mongoose
 import User from "../models/userModels";
 import { app } from "../app"; // Import your Express app
-import { Request, Response, NextFunction } from "express";
-import { ParamsDictionary } from "express-serve-static-core";
 import Blog from "../models/blogModels"; // Import your Blog model
+import Like from "../models/likeModels";
 import {
   adminLoginData,
   adminSignupData,
@@ -312,85 +311,31 @@ describe("All API Endpoint", () => {
       expect(response.status).toBe(401);
     });
   });
-  // ////////////////// blog middleware ////////////////
-  // describe("Blog Middleware", () => {
-  //   describe("isValid Middleware", () => {
-  //     it("should return 400 if blog validation fails", async () => {
-  //       const invalidBlogData = {
-  //         // Provide invalid blog data here
-  //       };
 
-  //       const req: Request<ParamsDictionary, any, any, any> = {
-  //         body: invalidBlogData,
-  //       } as Request<ParamsDictionary, any, any, any>;
+  describe("Like Endpoint", () => {
+    it("should create a like for a blog", async () => {
+      // const blogId = new mongoose.Types.ObjectId(); // Generate a new ObjectId for testing
+      console.log("genereate blog iiiiiiiiiiiiiiiiiiiiiiid", blogId);
+      const response = await request(app)
+        .post(`/api/v1/blogs/${blogId}/likes`)
+        .set("Authorization", `Bearer ${token}`)
+        .expect("Content-Type", /json/)
+        .expect(201);
 
-  //       const res = {
-  //         status: jest.fn().mockReturnThis(),
-  //         json: jest.fn(),
-  //       };
+      expect(response.body).toHaveProperty("status", "201");
+      expect(response.body).toHaveProperty(
+        "message",
+        "Like toggled successfully"
+      );
 
-  //       const next = jest.fn();
+      // Verify that the like is created in the database
+      const like = await Like.findOne({ blog_id: blogId });
+      expect(like).toBeTruthy();
 
-  //       await isValid(req, res as unknown as Response, next);
-
-  //       expect(res.status).toHaveBeenCalledWith(400);
-  //       expect(res.json).toHaveBeenCalled();
-
-  //       // Additional test cases...
-  //     });
-
-  //     it("should return 400 if blog title is not unique", async () => {
-  //       const existingBlog = new Blog({
-  //         // Provide existing blog data here
-  //         title: "new",
-  //       });
-  //       await existingBlog.save();
-
-  //       const req = {
-  //         body: {
-  //           title: existingBlog.title,
-  //           // Add other required fields for a new blog
-  //         },
-  //       };
-
-  //       const res = {
-  //         status: jest.fn().mockReturnThis(),
-  //         json: jest.fn(),
-  //       };
-
-  //       const next = jest.fn();
-
-  //       await isValid(req, res as unknown as Response, next);
-
-  //       expect(res.status).toHaveBeenCalledWith(400);
-  //       expect(res.json).toHaveBeenCalledWith({
-  //         error: "Title must be unique",
-  //       });
-  //     });
-
-  //     it("should call next function if blog is valid", async () => {
-  //       const validBlogData = {
-  //         // Provide valid blog data here
-  //       };
-
-  //       const validationResult = validateBlog(validBlogData);
-  //       // Assume validationResult is valid
-
-  //       const req = {
-  //         body: validBlogData,
-  //       };
-
-  //       const res = {
-  //         status: jest.fn().mockReturnThis(),
-  //         json: jest.fn(),
-  //       };
-
-  //       const next = jest.fn();
-
-  //       await isValid(req, res as unknown as Response, next);
-
-  //       expect(next).toHaveBeenCalled();
-  //     });
-  //   });
-  // });
+      // Verify that the blog's likes array is updated
+      const blog = await Blog.findById(blogId);
+      expect(blog).toBeTruthy();
+      expect(blog?.likes).toContainEqual(like?._id);
+    });
+  });
 });
