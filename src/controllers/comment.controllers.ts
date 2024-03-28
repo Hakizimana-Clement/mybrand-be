@@ -105,12 +105,6 @@ const getAllComments = async (req: Request, res: Response) => {
     }
 
     // => blog data with comment and blog data too
-    // const blogComments = await BlogModel.findById(id).populate("comments");
-    // res.status(200).json({
-    //   status: "200",
-    //   message: "Success",
-    //   blog: blogComments,
-    // });
     // => blog data with comment array only
     const blogComments = await BlogModel.findById(id)
       .select("comments")

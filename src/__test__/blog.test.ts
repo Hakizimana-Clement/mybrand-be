@@ -2,6 +2,8 @@ import request from "supertest";
 import mongoose from "mongoose"; // Import Mongoose
 import User from "../models/userModels";
 import { app } from "../app"; // Import your Express app
+import { Request, Response, NextFunction } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
 import Blog from "../models/blogModels"; // Import your Blog model
 import {
   adminLoginData,
@@ -17,6 +19,8 @@ import {
   mongoConnectToTestingDB,
   mongoDisconnectToTestingDB,
 } from "../services/mongo.testing";
+import { isValid } from "../middleware/blogMiddleware";
+import { validateBlog } from "../validations/blog";
 
 // let blogId: string;
 let blogId: mongoose.Types.ObjectId;
@@ -50,25 +54,78 @@ describe("All API Endpoint", () => {
   //////////////////////////////
   // Login and signup test
   //////////////////////////////
-  describe("Signup and Login ", () => {
-    test("It should return signup and login successfully", async () => {
+  describe("Signup and Login", () => {
+    // Test signup with valid data
+    it("should sign up successfully with valid data", async () => {
       const response = await request(app)
         .post("/api/v1/users/signup")
         .send(adminSignupData)
         .expect("Content-Type", /json/)
         .expect(201);
 
-      console.log(response.body);
-      const responseLogin = await request(app)
+      expect(response.body).toHaveProperty("message", "Signup successfully");
+    });
+    // Test signup with missing or invalid data
+    it("should return 400 for signup with missing or invalid data", async () => {
+      const invalidData = {
+        email: "james@email.com",
+        password: "John@12!",
+      };
+
+      const response = await request(app)
+        .post("/api/v1/users/signup")
+        .send(invalidData)
+        .expect("Content-Type", /json/)
+        .expect(400);
+
+      expect(response.body).toHaveProperty("error");
+    });
+
+    // Test login with correct credentials
+    it("should login successfully with correct credentials", async () => {
+      const response = await request(app)
         .post("/api/v1/users/login")
         .send(adminLoginData)
+        .expect("Content-Type", /json/)
         .expect(200);
 
-      console.log(
-        "+++++++++ SIGN UP DATA ++++++++++++",
-        responseLogin.body.token
-      );
-      token = responseLogin.body.token;
+      expect(response.body).toHaveProperty("token");
+      token = response.body.token;
+    });
+
+    // Test login with incorrect credentials
+    it("should return 401 for login with incorrect credentials", async () => {
+      const invalidLoginData = {
+        email: "jammes@email.com",
+        password: "jammes@email.com",
+      };
+
+      const response = await request(app)
+        .post("/api/v1/users/login")
+        .send(invalidLoginData)
+        .expect("Content-Type", /json/)
+        .expect(401);
+
+      expect(response.body).toHaveProperty("error");
+    });
+
+    // Test authentication token validity after login
+    it("should return authenticated data after login with valid token", async () => {
+      const loginResponse = await request(app)
+        .post("/api/v1/users/login")
+        .send(adminLoginData)
+        .expect("Content-Type", /json/)
+        .expect(200);
+
+      const authToken = loginResponse.body.token;
+
+      const authenticatedResponse = await request(app)
+        .get("/api/v1/queries")
+        .set("Authorization", `Bearer ${authToken}`)
+        .expect("Content-Type", /json/)
+        .expect(200);
+
+      expect(authenticatedResponse.body.message).toStrictEqual("success");
     });
   });
 
@@ -83,7 +140,8 @@ describe("All API Endpoint", () => {
           .field("writer", blogData.writer)
           .field("writeImage", blogData.writeImage)
           .field("content", blogData.content)
-          .attach("blogImage", imagePath)
+          .attach("blogImage", blogData.blogImage)
+          // .attach("blogImage", imagePath)
           .expect(201);
 
         expect(body.message).toStrictEqual("Blog created");
@@ -254,4 +312,85 @@ describe("All API Endpoint", () => {
       expect(response.status).toBe(401);
     });
   });
+  // ////////////////// blog middleware ////////////////
+  // describe("Blog Middleware", () => {
+  //   describe("isValid Middleware", () => {
+  //     it("should return 400 if blog validation fails", async () => {
+  //       const invalidBlogData = {
+  //         // Provide invalid blog data here
+  //       };
+
+  //       const req: Request<ParamsDictionary, any, any, any> = {
+  //         body: invalidBlogData,
+  //       } as Request<ParamsDictionary, any, any, any>;
+
+  //       const res = {
+  //         status: jest.fn().mockReturnThis(),
+  //         json: jest.fn(),
+  //       };
+
+  //       const next = jest.fn();
+
+  //       await isValid(req, res as unknown as Response, next);
+
+  //       expect(res.status).toHaveBeenCalledWith(400);
+  //       expect(res.json).toHaveBeenCalled();
+
+  //       // Additional test cases...
+  //     });
+
+  //     it("should return 400 if blog title is not unique", async () => {
+  //       const existingBlog = new Blog({
+  //         // Provide existing blog data here
+  //         title: "new",
+  //       });
+  //       await existingBlog.save();
+
+  //       const req = {
+  //         body: {
+  //           title: existingBlog.title,
+  //           // Add other required fields for a new blog
+  //         },
+  //       };
+
+  //       const res = {
+  //         status: jest.fn().mockReturnThis(),
+  //         json: jest.fn(),
+  //       };
+
+  //       const next = jest.fn();
+
+  //       await isValid(req, res as unknown as Response, next);
+
+  //       expect(res.status).toHaveBeenCalledWith(400);
+  //       expect(res.json).toHaveBeenCalledWith({
+  //         error: "Title must be unique",
+  //       });
+  //     });
+
+  //     it("should call next function if blog is valid", async () => {
+  //       const validBlogData = {
+  //         // Provide valid blog data here
+  //       };
+
+  //       const validationResult = validateBlog(validBlogData);
+  //       // Assume validationResult is valid
+
+  //       const req = {
+  //         body: validBlogData,
+  //       };
+
+  //       const res = {
+  //         status: jest.fn().mockReturnThis(),
+  //         json: jest.fn(),
+  //       };
+
+  //       const next = jest.fn();
+
+  //       await isValid(req, res as unknown as Response, next);
+
+  //       expect(next).toHaveBeenCalled();
+  //     });
+  //   });
+  // });
 });

@@ -6,6 +6,7 @@ export const blogData = {
     "balloon swim corner horn tiny stream by realize sent soft desert selection village needed morning ",
   writer: "Clara Stevenson",
   writeImage: "http://ehuhopgu.sn/dedirafan",
+  blogImage: imagePath,
   content:
     "noun choose army course something pupil anywhere happily round familiar clothes unhappy roof hungry replace noon refer canal problem ordinary open policeman nervous arrange. spoken saved drove trunk leaving anyone health layers his pony surface plain blow proud pipe political real muscle cabin road married bicycle without century",
 };
