@@ -39,7 +39,6 @@ const loginUser = async (req: Request, res: Response) => {
   try {
     // validation
     if (!email || !req.body.password) {
-      // throw Error("All fields must be filled");
       throw Error("Wrong credential");
     }
     // check use email exist
@@ -57,10 +56,12 @@ const loginUser = async (req: Request, res: Response) => {
     if (!passwordMatch) {
       throw Error("Wrong credential");
     }
+    const role = user.role;
     const token = await JwtUtils.createToken({
       _id: user._id,
       name: user.name,
-      role: user.role,
+      role: role,
+      // role: user.role,
     });
 
     res.status(200).json({

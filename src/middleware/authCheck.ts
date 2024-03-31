@@ -17,7 +17,7 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.header("Authorization")?.split(" ")[1] as string;
     const userDetail = await JwtUtils.verifyToken(token);
     const userExist = await UserModel.findOne({ _id: userDetail._id });
-    console.log("***###########*********", token);
+    // console.log("***###########*********", token);
 
     if (!userExist) return res.status(401).json({ message: "User not found" });
     const userData = {
@@ -26,12 +26,12 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     // check  if user is admin
-    // (req as CustomRequest).user = userData;
-    // if (userDetail.role !== "admin") {
-    //   return res
-    //     .status(403)
-    //     .json({ status: "403", message: "Only admin can perform this action" });
-    // }
+    (req as CustomRequest).user = userData;
+    if (userDetail.role !== "admin") {
+      return res
+        .status(403)
+        .json({ status: "403", message: "Only admin can perform this action" });
+    }
 
     next();
   } catch (error) {

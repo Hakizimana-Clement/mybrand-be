@@ -110,7 +110,8 @@ const getAllComments = async (req: Request, res: Response) => {
       .select("comments")
       .populate({
         path: "comments",
-        select: "-blog_id -__v -_id -createdAt -updatedAt",
+        // select: "-blog_id -__v -_id -createdAt -updatedAt",
+        // select: "-blog_id -__v -_id -createdAt -updatedAt",
       });
     res.status(200).json({
       status: "200",

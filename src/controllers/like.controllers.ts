@@ -3,10 +3,16 @@ import mongoose from "mongoose";
 import blogModel from "../models/blogModels";
 import likeModel from "../models/likeModels";
 import jwt from "jsonwebtoken";
+
+const getAllLikes = async (req: Request, res: Response) => {
+  const likes = await likeModel.find({});
+  res.status(200).json({ status: "200", message: "success", likes: likes });
+};
+
 ///////////////////////////////
 // get all likes
 ///////////////////////////////
-const getAllLikes = async (req: Request, res: Response) => {
+const getAllLikesForSpecificBlog = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
@@ -113,4 +119,4 @@ const createLike = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllLikes, createLike };
+export { getAllLikes, getAllLikesForSpecificBlog, createLike };

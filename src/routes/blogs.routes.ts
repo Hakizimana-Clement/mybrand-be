@@ -1,5 +1,9 @@
 // import like
-import { getAllLikes, createLike } from "../controllers/like.controllers";
+import {
+  getAllLikes,
+  getAllLikesForSpecificBlog,
+  createLike,
+} from "../controllers/like.controllers";
 // import comment
 import {
   createComment,
@@ -181,7 +185,9 @@ blogRouter
   .delete("/:id", isAdmin, httpDeleteBlog)
   // .delete("/:id", httpDeleteBlog)
 
+  ///////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////// COMMENT ROUTES /////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////
   /**
    * @swagger
    * tags:
@@ -214,8 +220,9 @@ blogRouter
    */
 
   // get all comment
-  .get("/:id/comments", isAdmin, getAllComments)
-  // .get("/:id/comments", getAllComments)
+  // .get("/:id/comments", isAdmin, getAllComments)
+  // .get("/:id/comments", isAdmin, getAllComments)
+  .get("/:id/comments", getAllComments)
   /**
    * @swagger
    * /api/v1/blogs/{blogId}/comments:
@@ -265,10 +272,12 @@ blogRouter
    */
 
   // Create comment
-  .post("/:id/comments", isAdmin, isCommentValid, createComment)
-  // .post("/:id/comments", isCommentValid, createComment)
+  // .post("/:id/comments", isLogin, isAdmin, isCommentValid, createComment)
+  .post("/:id/comments", isLogin, isCommentValid, createComment)
 
-  //   ////////////////////////////// LIKE ROUTES /////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////// LIKE ROUTES /////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////
   // Get all likes for a specific blog
   /**
    * @swagger
@@ -296,8 +305,8 @@ blogRouter
    *       - bearerAuth: []
    */
   // get all likes
-  .get("/:id/likes", isLogin, isAdmin, getAllLikes)
-  // .get("/:id/likes", getAllLikes)
+  // .get("/:id/likes", isLogin, isAdmin, getAllLikes)
+  .get("/:id/likes", getAllLikesForSpecificBlog)
   // .get("/:id/likes", isAdmin, getAllLikes)
   // .get("/:id/likes", getAllLikes)
 
@@ -329,8 +338,8 @@ blogRouter
    */
 
   // create like
-  .post("/:id/likes", isLogin, isAdmin, createLike);
-// .post("/:id/likes", createLike);
+  // .post("/:id/likes", isLogin, isAdmin, createLike);
+  .post("/:id/likes", isLogin, createLike);
 // .post("/:id/likes", isAdmin, createLike);
 
 export default blogRouter;

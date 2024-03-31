@@ -60,10 +60,13 @@ import isSignupValid from "../middleware/signupMiddleware";
  *                 type: string
  *               password:
  *                 type: string
+ *               confirm password:
+ *                 type: string
  *             example:
  *               name: Kalisa mucyo
  *               email: mucyo@example.com
  *               password: 123John!
+ *               confirm password: 123John!
  *     responses:
  *       201:
  *         description: User signup successfully
