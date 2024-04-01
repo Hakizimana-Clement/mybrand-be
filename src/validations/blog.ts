@@ -3,12 +3,12 @@ import Joi from "joi";
 const blogSchema = Joi.object({
   title: Joi.string().required().min(5).max(200),
   writer: Joi.string().required().min(5).max(50),
-  blogImage: Joi.string(),
+  // blogImage: Joi.string(),
   // blogImage: Joi.string().required(),
   // blogImage: Joi.required().uri(),
-  writeImage: Joi.string(),
-  content: Joi.string().required().min(10).max(5000),
-  // content: Joi.string().required().min(100).max(5000),
+  // writeImage: Joi.string(),
+  content: Joi.string().required().max(50000),
+  // content: Joi.string().required().min(10).max(50000),
 });
 
 // validate data we have

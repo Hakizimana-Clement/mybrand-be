@@ -85,18 +85,6 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     });
     // step 2. save them
     await blog.save();
-    // console.log("yyyyyyyyyyyyyyyyyy blog", blog);
-    // console.log(
-    //   "ffffffffffffffffff image upload fffffffffffffffffffffffffffff",
-    //   uploadImageToCloudinary
-    // );
-    // const blog = await Blog.create({
-    //   title: req.body.title,
-    //   writer: req.body.writer,
-    //   writeImage: req.body.writeImage,
-    //   blogImage: uploadImageToCloudinary.secure_url,
-    //   content: req.body.content,
-    // });
     // step 3. send data
     res
       .status(201)
@@ -110,12 +98,27 @@ const httpCreateBlog = async (req: Request, res: Response) => {
     } else {
       // Handle other errors
       console.error("Error creating blog:", error);
-      res
-        .status(500)
-        .json({ status: "error", message: "Internal server error" });
+
+      res.status(400).json({ status: "404", message: "Bad request" });
+      //   res
+      //     .status(500)
+      //     .json({ status: "error", message: "Internal server error" });
+      // }
     }
   }
 };
+// console.log("yyyyyyyyyyyyyyyyyy blog", blog);
+// console.log(
+//   "ffffffffffffffffff image upload fffffffffffffffffffffffffffff",
+//   uploadImageToCloudinary
+// );
+// const blog = await Blog.create({
+//   title: req.body.title,
+//   writer: req.body.writer,
+//   writeImage: req.body.writeImage,
+//   blogImage: uploadImageToCloudinary.secure_url,
+//   content: req.body.content,
+// });
 
 // //////////////////////////////////
 // // Update blog

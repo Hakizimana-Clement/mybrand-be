@@ -5,6 +5,18 @@ import BlogModel from "../models/blogModels";
 import jwt from "jsonwebtoken";
 
 ////////////////////////////////
+// get all comments in one endpoint without specify blog id
+////////////////////////////////
+
+const getAllCommentsWithoutSingleBlog = async (req: Request, res: Response) => {
+  const comments = await CommentModel.find({});
+  // step 2. send data
+  // res.json(comments);
+  res
+    .status(200)
+    .json({ status: "200", message: "success", comments: comments });
+};
+////////////////////////////////
 // create comment
 ////////////////////////////////
 const createComment = async (req: Request, res: Response) => {
@@ -132,4 +144,4 @@ const getAllComments = async (req: Request, res: Response) => {
     });
   }
 };
-export { createComment, getAllComments };
+export { createComment, getAllComments, getAllCommentsWithoutSingleBlog };

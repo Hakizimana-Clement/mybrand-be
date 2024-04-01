@@ -8,6 +8,8 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.header("Authorization"))
       return res.status(401).json({
         status: "401",
+
+        error: "Unauthorized",
         message: "please login",
       });
 
@@ -38,6 +40,8 @@ const isAdmin = async (req: Request, res: Response, next: NextFunction) => {
     console.log(error);
     return res.status(401).json({
       status: "401",
+
+      error: "Unauthorized",
       message: "Please login",
     });
   }
@@ -48,6 +52,8 @@ const isLogin = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.header("Authorization"))
       return res.status(401).json({
         status: "401",
+
+        error: "Unauthorized",
         message: "Please login",
       });
 
